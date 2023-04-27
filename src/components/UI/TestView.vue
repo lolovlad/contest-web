@@ -4,11 +4,11 @@
     <div class="test__body">
       <div class="test__chunk">
         <h4>Ввод</h4>
-        <p v-html="examplePrintVariable"></p>
+        <p>{{examplePrintVariable}}</p>
       </div>
       <div class="test__chunk">
         <h4>Ввод</h4>
-        <p v-html="examplePrintAnswer"></p>
+        <p>{{examplePrintAnswer}}</p>
       </div>
     </div>
   </div>
@@ -30,11 +30,11 @@ export default {
   },
   computed: {
     examplePrintVariable(){
-      const newVal = this.fillingTypeVariable.replaceAll("\n", "<br />")
+      const newVal = this.fillingTypeVariable
       return newVal
     },
     examplePrintAnswer(){
-      const newVal = this.answer.replaceAll("\n", "<br />")
+      const newVal = this.answer
       return newVal
     },
   },
@@ -60,5 +60,8 @@ export default {
 }
 .test__main h2{
   margin-bottom: 30px;
+}
+.test__chunk > p{
+  white-space: pre;
 }
 </style>
