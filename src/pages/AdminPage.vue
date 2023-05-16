@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <h1>token {{$store.token}}}</h1>
+  <admin-header/>
+  <div class="main">
+    <router-view>
+
+    </router-view>
   </div>
 </template>
 
 <script>
+import AdminHeader from "@/components/AdminHeader";
 export default {
-  name: "AdminPage"
+  name: "AdminPage",
+  components: {AdminHeader}
 }
 </script>
 

@@ -4,7 +4,7 @@
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
   >
-    <option v-for="val in data" :value="val.value" :key="val.value">{{ val.text }}</option>
+    <option v-for="(val, index) in data" :value=val.value :key="index">{{ val.text }}</option>
   </select>
 </template>
 

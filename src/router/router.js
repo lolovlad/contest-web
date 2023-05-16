@@ -7,6 +7,11 @@ import ContestHomePage from "@/pages/ContestHomePage";
 import ContestTaskPage from "@/pages/ContestTaskPage";
 import ContestResultPage from "@/pages/ContestResultPage";
 import ContestTaskReportPage from "@/pages/ContestTaskReportPage";
+import AdminUserPage from "@/pages/AdminUserPage";
+import AdminContestPage from "@/pages/AdminContestPage";
+import AdminTeamPage from "@/pages/AdminTeamPage";
+import AdminContestForm from "@/pages/AdminContestForm";
+import AdminContestListPage from "@/pages/AdminContestListPage";
 
 const routes = [
     {
@@ -30,8 +35,40 @@ const routes = [
         }
     },
     {
-        path: '/admin_panel',
+        path: '/admin',
         component: AdminPage,
+        children: [
+            {
+              path: "",
+              component: AdminUserPage
+            },
+            {
+                path: "user",
+                component: AdminUserPage
+            },
+            {
+                path: "contest",
+                component: AdminContestPage,
+                children: [
+                    {
+                        path: "edit/:id_contest",
+                        component: AdminContestForm,
+                    },
+                    {
+                        path: "add",
+                        component: AdminContestForm
+                    },
+                    {
+                        path: "",
+                        component: AdminContestListPage
+                    }
+                ]
+            },
+            {
+                path: "team",
+                component: AdminTeamPage
+            },
+        ],
         beforeEnter: (to, from, next) => {
             if(sessionStorage.getItem("token") !== null){
                 if(parseInt(sessionStorage.getItem("typeUser")) === 1) {

@@ -44,7 +44,7 @@ export default {
     },
     redirect(typeUser){
       if (typeUser === 1){
-        this.$router.push('/admin_panel')
+        this.$router.push('/admin')
       }else{
         this.$router.push('/menu')
       }
