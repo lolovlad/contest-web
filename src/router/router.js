@@ -8,10 +8,14 @@ import ContestTaskPage from "@/pages/ContestTaskPage";
 import ContestResultPage from "@/pages/ContestResultPage";
 import ContestTaskReportPage from "@/pages/ContestTaskReportPage";
 import AdminUserPage from "@/pages/AdminUserPage";
-import AdminContestPage from "@/pages/AdminContestPage";
+import AdminContestPage from "@/pages/AdminContestPages/AdminContestPage";
 import AdminTeamPage from "@/pages/AdminTeamPage";
-import AdminContestForm from "@/pages/AdminContestForm";
-import AdminContestListPage from "@/pages/AdminContestListPage";
+import AdminContestForm from "@/pages/AdminContestPages/AdminContestForm";
+import AdminContestListPage from "@/pages/AdminContestPages/AdminContestListPage";
+import AdminTaskPage from "@/pages/AdminContestPages/Task/AdminTaskPage";
+import AdminTaskViewPage from "@/pages/AdminContestPages/Task/AdminTaskViewPage";
+import AdminTaskForm from "@/pages/AdminContestPages/Task/AdminTaskForm";
+import AdminTaskSettingsForm from "@/pages/AdminContestPages/Task/AdminTaskSettingsForm";
 
 const routes = [
     {
@@ -61,7 +65,29 @@ const routes = [
                     {
                         path: "",
                         component: AdminContestListPage
-                    }
+                    },
+                    {
+                        path: ":id_contest/task",
+                        component: AdminTaskPage,
+                        children: [
+                            {
+                                path: "",
+                                component: AdminTaskViewPage,
+                            },
+                            {
+                                path: "edit/:id_task",
+                                component: AdminTaskForm,
+                            },
+                            {
+                                path: "add",
+                                component: AdminTaskForm
+                            },
+                            {
+                                path: ":id_task/settings",
+                                component: AdminTaskSettingsForm
+                            },
+                        ]
+                    },
                 ]
             },
             {

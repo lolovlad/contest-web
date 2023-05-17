@@ -38,6 +38,7 @@ export default {
   height: 100vh;
   background: white;
   z-index: 999;
+  overflow: auto;
 }
 .content{
   width: 80%;
@@ -45,7 +46,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%
 }
 .active{
   display: none;

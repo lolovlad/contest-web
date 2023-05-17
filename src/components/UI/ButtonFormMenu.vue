@@ -24,7 +24,7 @@ export default {
 .btn__menu{
   display: flex;
   gap: 10px;
-  margin-top: 40px;
+  margin-top: 10px;
   width: 50%;
 }
 </style>

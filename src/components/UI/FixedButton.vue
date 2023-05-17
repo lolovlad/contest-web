@@ -22,7 +22,7 @@ export default {
   color: white;
   position: fixed;
   right: 30px;
-  bottom: 30px;
+  top: 50%;
   font-size: 40px;
   font-weight: bolder;
   justify-content: center;

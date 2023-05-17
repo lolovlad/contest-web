@@ -35,6 +35,7 @@
       :is-add="isAdd"
       @add="addContest"
       @clear="clearForm"
+      @update="updateContest"
     />
   </div>
 </template>
@@ -59,16 +60,16 @@ export default {
         name_contest: "",
         type: 1,
         state_contest: 0,
-        datetime_start: Date(),
-        datetime_end: Date()
+        datetime_start: new Date().toISOString(),
+        datetime_end: new Date().toISOString()
       },
       contest: {
         description: "",
         name_contest: "",
         type: 1,
         state_contest: 0,
-        datetime_start: Date(),
-        datetime_end: Date(),
+        datetime_start: new Date().toISOString(),
+        datetime_end: new Date().toISOString(),
       },
 
       selectTypeContest: [
@@ -85,24 +86,46 @@ export default {
     }
   },
   methods: {
+    isDateValid(){
+      const dateStart = new Date(this.contest.datetime_start)
+      const dateEnd = new Date(this.contest.datetime_end)
+      return dateEnd > dateStart
+    },
+
     async addContest(){
-      this.contest.state_contest = parseInt(this.contest.state_contest)
-      const response = await axios.post(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests`,
-          this.contest,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
-      )
-      response.status
-      this.$router.push(`/admin/contest`)
-      console.log(this.contest)
+      if(this.isDateValid()){
+        const isAgree = confirm("Поле типа соревнования нельзя будет изменить. Вы согласны с ведеными данными?");
+        if(isAgree){
+          this.contest.state_contest = parseInt(this.contest.state_contest)
+          const response = await axios.post(
+              `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests`,
+              this.contest,
+              {
+                headers: {
+                  "Authorization": `Bearer ${this.$store.state.token}`
+                }
+              }
+          )
+          response.status
+          this.$router.push(`/admin/contest`)
+        }
+      }
     },
 
     async updateContest(){
-
+      if(this.isDateValid()){
+        const response = await axios.put(
+            `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/`,
+            this.contest,
+            {
+              headers: {
+                "Authorization": `Bearer ${this.$store.state.token}`
+              }
+            }
+        )
+        this.$router.push(`/admin/contest`)
+        response.status
+      }
     },
 
     clearForm(){

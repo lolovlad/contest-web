@@ -5,6 +5,7 @@
          type="file"
          @change="fileSelected"
          ref="inputFile"
+         :accept="accept"
      >
      <span>{{nameFile}}</span>
    </label>
@@ -15,24 +16,34 @@
 export default {
   props: {
     data: String,
+    accept: {
+      type: String,
+      default: "*"
+    },
   },
   emits: ['update:data'],
   data(){
     return {
       selectFile: null,
-      nameFile: "Выберите файл"
+      nameFile: "Выберите файл",
+      bytesData: ""
     }
   },
   methods: {
     fileSelected(event){
       const reader = new FileReader()
+
       reader.addEventListener('load', (event) => {
-        this.selectFile = event.target.result;
+        this.selectFile = event.target.result
         this.$emit('update:data', this.selectFile)
       });
-      if(event.target.files[0])
+
+
+      if(event.target.files[0]){
         this.nameFile = event.target.files[0].name
         reader.readAsBinaryString(event.target.files[0])
+        this.bytesData = event.target.files[0]
+      }
     },
     clearSelected(){
       this.$refs.inputFile.value = null;

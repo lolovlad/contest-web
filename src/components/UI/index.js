@@ -13,6 +13,9 @@ import FixedButton from "@/components/UI/FixedButton";
 import TextEditor from "@/components/UI/TextEditor";
 import DateTimePicker from "@/components/UI/DateTimePicker";
 import ButtonFormMenu from "@/components/UI/ButtonFormMenu";
+import SelectToolTip from "@/components/UI/SelectToolTip";
+import RangeInput from "@/components/UI/RangeInput";
+import MultiFileInput from "@/components/UI/MultiFileInput";
 
 
 export default [
@@ -30,5 +33,8 @@ export default [
     FixedButton,
     TextEditor,
     DateTimePicker,
-    ButtonFormMenu
+    ButtonFormMenu,
+    SelectToolTip,
+    RangeInput,
+    MultiFileInput
 ]
