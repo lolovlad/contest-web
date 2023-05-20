@@ -2,11 +2,11 @@
   <div class="task" v-if="isLoadMain">
     <header-task>{{typeTaskFilter(targetTask.type_task)}} {{targetTask.name_task}}</header-task>
     <castom-table :headers="headersTableSettings" :contents="contentsTableSettings" class="task__table"/>
-    <description-task v-html="targetTask.description"/>
+    <description-task v-html="targetTask.description" class="desc"/>
     <header-task>Формат ввода</header-task>
-    <description-task v-html="targetTask.description_input"/>
+    <description-task v-html="targetTask.description_input"  class="desc"/>
     <header-task>Формат вывода</header-task>
-    <description-task v-html="targetTask.description_output"/>
+    <description-task v-html="targetTask.description_output"  class="desc"/>
     <test-view
         class="test__view"
         v-for="(item, index) in targetTask.view_test"
@@ -244,5 +244,8 @@ export default {
 }
 .form__send_answer > h3{
   margin: 8px 0;
+}
+.desc{
+  width: 70%;
 }
 </style>

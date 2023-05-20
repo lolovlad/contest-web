@@ -1,6 +1,10 @@
 <template>
   <div class="main" v-if="userLoad">
-    <user-list :userList="listUsers" @deleteUser="deleteUser" @updateUser="updateUser"/>
+    <user-list>
+      <UserCard v-for="user in listUsers" :key="user.id" :userData="user"
+                @deleteUser="$emit('deleteUser', user.id)"
+                @updateUser="$emit('updateUser', user.id)"/>
+    </user-list>
     <CastomPagination :countPage="countPage" class="pag" @updatePage="getListUser"/>
   </div>
   <CastomLoader v-else/>
@@ -18,9 +22,10 @@ import UserList from "@/components/UserList";
 import CastomModelWindow from "@/components/UI/CastomModelWindow";
 import UserForm from "@/components/UI/UserForm";
 import FixedButton from "@/components/UI/FixedButton";
+import UserCard from "@/components/UI/UserCard";
 export default {
   name: "AdminUserPage",
-  components: {FixedButton, UserForm, CastomModelWindow, UserList, CastomLoader, CastomPagination},
+  components: {UserCard, FixedButton, UserForm, CastomModelWindow, UserList, CastomLoader, CastomPagination},
   data(){
     return{
       countPage: null,

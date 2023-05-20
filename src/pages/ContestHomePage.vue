@@ -7,6 +7,7 @@
     <h1 v-if="$store.state.isCloseContest">
       контест закончен
     </h1>
+    <description-task  v-html="contest.description"/>
     <h1>Ошибки, которые могу быть при тестировании программы.</h1>
     <p><span>Wrong answer (WA)</span> - Неверный ответ. Результат работы программы не совпадает с
       ответом жюри. Неверный формат вывода или алгоритмическая ошибка в программе.</p>
@@ -35,8 +36,10 @@
 
 <script>
 import axios from "axios";
+import DescriptionTask from "@/components/UI/DescriptionTask";
 
 export default {
+  components: {DescriptionTask},
   data(){
     return{
       idContest: this.$route.params.id_contest,
@@ -78,7 +81,7 @@ export default {
 }
 
 .main_header{
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   margin: 40px 0;
 }
