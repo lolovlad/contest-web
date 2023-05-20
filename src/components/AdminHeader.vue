@@ -1,12 +1,12 @@
 <template>
   <div class="header__main">
     <ul class="menu">
-      <li><a @click="$router.push(`/admin/user/`)">Пользователи</a></li>
-      <li><a @click="$router.push(`/admin/contest/`)">Контесты</a></li>
-      <li><a @click="$router.push(`/admin/team/`)">Команды</a></li>
+      <li><a @click="$router.push(`/admin/user/`)">Utilisateurs</a></li>
+      <li><a @click="$router.push(`/admin/contest/`)">Cours</a></li>
+      <!--<li><a @click="$router.push(`/admin/team/`)">Команды</a></li>-->
     </ul>
     <div class="btn__menu">
-      <agree-button>Выход</agree-button>
+      <agree-button>Sortie</agree-button>
     </div>
   </div>
 </template>

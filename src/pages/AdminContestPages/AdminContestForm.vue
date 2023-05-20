@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <TextInput
-        placeholder="Название соревнования"
+        placeholder="Nom du cours"
         type="text"
         v-model="contest.name_contest"
     />
@@ -16,18 +16,18 @@
         :disabled="!isAdd"
     />
     <TextEditor
-        :placeholder="'Описание события'"
+        :placeholder="'Description du cours'"
         v-model="contest.description"
         ref="description"
     />
 
     <DateTimePicker
-        :placeholder="'Время начала'"
+        :placeholder="'Heure de début'"
         :min-date=Date()
         v-model="contest.datetime_start"
     />
     <DateTimePicker
-        :placeholder="'Время окончания'"
+        :placeholder="'Heure de fin'"
         :min-date=Date()
         v-model="contest.datetime_end"
     />
@@ -73,15 +73,16 @@ export default {
       },
 
       selectTypeContest: [
-        {text: "Олимпида", value: 1},
-        {text: "Командная олимпиада", value: 2},
-        {text: "Хакатон", value: 3}
+        {text: "Cours Python", value: 1},
+        //{text: "Олимпида", value: 1},
+        //{text: "Командная олимпиада", value: 2},
+        //{text: "Хакатон", value: 3}
       ],
       selectStateContest: [
-        {text: "Зарегестрированн", value: 0},
-        {text: "Подтверждено", value: 1},
-        {text: "Проходит", value: 2},
-        {text: "Завершенно", value: 3}
+        {text: "Inscrit", value: 0},
+        {text: "Confirmé", value: 1},
+        {text: "Passe", value: 2},
+        {text: "Complété", value: 3}
       ],
     }
   },
@@ -94,7 +95,7 @@ export default {
 
     async addContest(){
       if(this.isDateValid()){
-        const isAgree = confirm("Поле типа соревнования нельзя будет изменить. Вы согласны с ведеными данными?");
+        const isAgree = confirm("Le champ du type de cours ne peut pas être modifié. Êtes-vous d'accord avec les données saisies ?");
         if(isAgree){
           this.contest.state_contest = parseInt(this.contest.state_contest)
           const response = await axios.post(

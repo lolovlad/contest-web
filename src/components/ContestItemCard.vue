@@ -8,7 +8,7 @@
       <h2>{{typeContest}}</h2>
       <h2>{{stateContest}}</h2>
     </div>
-    <agree-button @click="$router.push(`/contest/${contest.id}`)">Перейти в контест</agree-button>
+    <agree-button @click="$router.push(`/contest/${contest.id}`)">Aller à la leçon</agree-button>
   </div>
 </template>
 
@@ -25,18 +25,18 @@ export default {
   computed: {
     typeContest() {
       if(this.contest.type === 1){
-        return "Не командная"
+        return "Pas de commande"
       }else{
-        return "Командная"
+        return "Commande"
       }
     },
     stateContest(){
       if(this.contest.type === 1){
-        return "Зарегестрированна"
+        return "Inscrit"
       }else if(this.contest.type === 2){
-        return "Проходит"
+        return "passe"
       }
-      return "Законченна"
+      return "Fini"
     }
   },
 

@@ -12,11 +12,11 @@
   <SelectToolTip ref="selectTool" @close="clearSelect">
     <h3 class="__name">{{selectContest.name_contest}}</h3>
     <div class="btn__menu">
-      <agree-button @click="deleteContest(selectContest.id)">Удалить</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Редактировать</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/${selectContest.id}/task`)">Задания</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Отчет</agree-button>
-      <agree-button @click="openModelWindow">Добавить пользователей</agree-button>
+      <agree-button @click="deleteContest(selectContest.id)">Supprimer</agree-button>
+      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Modifier</agree-button>
+      <agree-button @click="$router.push(`/admin/contest/${selectContest.id}/task`)">Tâches</agree-button>
+      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Rapport</agree-button>
+      <agree-button @click="openModelWindow">Ajouter des utilisateurs</agree-button>
     </div>
   </SelectToolTip>
   <CastomModelWindow ref="modelWindow" @close="closeWindow">
@@ -29,7 +29,7 @@
           <UserCardView v-for="(user, index) in contestListUsers" :key="index" :user="user" @click="deleteUser(index)"/>
         </user-list>
       </div>
-      <agree-button @click="regUsers">Сохранить</agree-button>
+      <agree-button @click="regUsers">Sauvegarder</agree-button>
     </div>
   </CastomModelWindow>
 </template>

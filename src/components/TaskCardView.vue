@@ -5,9 +5,9 @@
       <p>{{task.type_task}}</p>
     </div>
     <div class="card__btn__menu">
-      <agree-button @click="$emit('update')">Редактировать</agree-button>
-      <agree-button @click="$emit('settings')">Настройки среды</agree-button>
-      <agree-button @click="$emit('delete')">Удалить</agree-button>
+      <agree-button @click="$emit('update')">Modifier</agree-button>
+      <agree-button @click="$emit('settings')">Paramètres d'environnement</agree-button>
+      <agree-button @click="$emit('delete')">Supprimer</agree-button>
     </div>
   </div>
 </template>

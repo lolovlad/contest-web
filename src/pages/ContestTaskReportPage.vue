@@ -1,5 +1,5 @@
 <template>
-  <agree-button @click="$router.go(-1)">Назад</agree-button>
+  <agree-button @click="$router.go(-1)">Dos</agree-button>
   <div v-if="isLoadReport">
     <report-card v-for="(repChunk, idObj) in report.list_report" :report-chunk="repChunk" :key="idObj"/>
   </div>

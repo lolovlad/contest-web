@@ -35,7 +35,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 60px;
+  height: 100px;
   background: #0273bb;
   width: 100%;
   transition: 0.3s;

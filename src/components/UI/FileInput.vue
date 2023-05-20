@@ -25,7 +25,7 @@ export default {
   data(){
     return {
       selectFile: null,
-      nameFile: "Выберите файл",
+      nameFile: "Choisir le fichier",
       bytesData: ""
     }
   },
@@ -47,7 +47,7 @@ export default {
     },
     clearSelected(){
       this.$refs.inputFile.value = null;
-      this.nameFile = "Выберите файл"
+      this.nameFile = "Choisir le fichier"
     }
   },
   name: "FileInput"

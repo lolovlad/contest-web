@@ -1,22 +1,22 @@
 <template>
   <div class="form">
     <TextInput
-        placeholder="Название соревнования"
+        placeholder="Nom du travail"
         type="text"
         v-model="task.name_task"
     />
     <TextEditor
-        :placeholder="'Задание'"
+        :placeholder="'Exercer'"
         v-model="task.description"
         ref="description"
     />
     <TextEditor
-        :placeholder="'Формат входных данных'"
+        :placeholder="'Format des données dentrée'"
         v-model="task.description_input"
         ref="descriptionInput"
     />
     <TextEditor
-        :placeholder="'Формат выходных данных'"
+        :placeholder="'Format de sortie'"
         v-model="task.description_output"
         ref="descriptionOutput"
     />

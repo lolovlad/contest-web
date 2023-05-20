@@ -1,16 +1,16 @@
 <template>
   <form class="form__sign" @submit.prevent>
     <TextInput
-        placeholder="логин"
+        placeholder="Login"
         type="text"
         v-model="login"
     />
     <TextInput
-        placeholder="пароль"
+        placeholder="mot de passe"
         type="password"
         v-model="password"
     />
-    <AgreeButton class="btn__agr" @click="signin">вход</AgreeButton>
+    <AgreeButton class="btn__agr" @click="signin">entrée</AgreeButton>
     <label>{{error}}</label>
   </form>
 </template>

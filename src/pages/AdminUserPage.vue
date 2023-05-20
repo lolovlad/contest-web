@@ -2,8 +2,8 @@
   <div class="main" v-if="userLoad">
     <user-list>
       <UserCard v-for="user in listUsers" :key="user.id" :userData="user"
-                @deleteUser="$emit('deleteUser', user.id)"
-                @updateUser="$emit('updateUser', user.id)"/>
+                @deleteUser="deleteUser(user.id)"
+                @updateUser="updateUser(user.id)"/>
     </user-list>
     <CastomPagination :countPage="countPage" class="pag" @updatePage="getListUser"/>
   </div>

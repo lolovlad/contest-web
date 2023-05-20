@@ -8,7 +8,7 @@
           :accept="accept"
           multiple
       >
-      <span>Выберите файлы</span>
+      <span>Sélectionnez les fichiers</span>
     </label>
   </div>
   <div class="list__file">

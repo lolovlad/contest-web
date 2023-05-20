@@ -10,7 +10,7 @@
         :min="32"
         :max="1024"
         :step="2"
-        :placeholder="'Количество доступной памяти:'"
+        :placeholder="'Quantité de mémoire disponible:'"
         :metric="'Mb'"
       />
     </div>
@@ -29,7 +29,7 @@
         :min="10"
         :max="200"
         :step="5"
-        :placeholder="'Количество доступных попыток:'"
+        :placeholder="'Nombre de tentatives disponibles:'"
     />
     <ButtonFormMenu :is-add="false"
                     @update="updateSettings"
@@ -37,7 +37,7 @@
     />
   </div>
   <div class="file__edit">
-    <agree-button @click="openModalWindow">Открыть файловую систему</agree-button>
+    <agree-button @click="openModalWindow">Ouvrir le système de fichiers</agree-button>
   </div>
   <CastomModelWindow ref="modelWindow">
     <div class="form__file">
@@ -70,19 +70,19 @@ export default {
       idTask: this.$route.params.id_task,
       idContest: this.$route.params.id_contest,
       selectTimeWork: [
-        {text: "1 секунда", value: 1},
-        {text: "2 секунда", value: 2},
-        {text: "3 секунда", value: 3},
-        {text: "4 секунда", value: 4},
-        {text: "5 секунда", value: 5}
+        {text: "1 seconde", value: 1},
+        {text: "2 seconde", value: 2},
+        {text: "3 seconde", value: 3},
+        {text: "4 seconde", value: 4},
+        {text: "5 seconde", value: 5}
       ],
       selectTypeInput: [
-        {text: "стандартный ввод", value: 1},
-        {text: "файл input.txt", value: 2}
+        {text: "entrée standard", value: 1},
+        {text: "fichier input.txt", value: 2}
       ],
       selectTypeOutput: [
-        {text: "стандартный вывод", value: 1},
-        {text: "файл output.txt", value: 2}
+        {text: "sortie standard", value: 1},
+        {text: "fichier output.txt", value: 2}
       ],
 
       settingsSchema: {

@@ -1,36 +1,36 @@
 <template>
   <div class="main__block" v-if="isLoad">
     <h1 class="main_header">
-      Это главная страница контеста
+      Ceci est la page principale du cours.
       {{contest.name_contest}}
     </h1>
     <h1 v-if="$store.state.isCloseContest">
-      контест закончен
+      cours terminé
     </h1>
     <description-task  v-html="contest.description"/>
-    <h1>Ошибки, которые могу быть при тестировании программы.</h1>
-    <p><span>Wrong answer (WA)</span> - Неверный ответ. Результат работы программы не совпадает с
-      ответом жюри. Неверный формат вывода или алгоритмическая ошибка в программе.</p>
-    <p><span>Time limit exceeded (TL)</span> - Превышен указанный в задаче лимит времени. Программа
-       выполняется дольше установленного времени. Неэффективное решение или
-       алгоритмическая ошибка в программе.</p>
-    <p><span>Presentation Error (PE)</span> - Отсутствие выходного файла OUTPUT.TXT. Файл не создан,
-       неверное имя файла или сбой программы до открытия выходного файла.</p>
-    <p><span>Compilation error (CE)</span> - Ошибка компиляции. В результате компиляции не создан
-      исполняемый файл. Синтаксическая ошибка в программе или неверно указано
-      расширение файла. Возможно, что при реализации на языке Java был использован класс,
-      отличный от Main.</p>
-    <p><span>Memory limit exceeded (ML)</span> - Превышен указанный в задаче лимит памяти. Программа
-      использует больше установленного размера памяти. Неэффективный алгоритм, либо
-      нерациональное использование памяти</p>
-    <p><span>Runtime error (RE)</span> - Ошибка исполнения. Программа завершила работу с ненулевым
-      кодом возврата. В этом случае результат работы не проверяется. Возможно, в программе
-      произошло обращение к несуществующему элементу массива, деление на ноль и т.д.
-      Возможно, программа на C++ не завершается оператором «return 0» или по иной причине
-      вернула ненулевой код возврата.</p>
+    <h1>Erreurs pouvant survenir lors du test du programme.</h1>
+    <p><span>Wrong answer (WA)</span> - Réponse incorrecte. La sortie du programme ne correspond pas
+      réponse du jury. Format de sortie invalide ou erreur algorithmique dans le programme.</p>
+    <p><span>Time limit exceeded (TL)</span> - Le délai spécifié dans la tâche a été dépassé. Programme
+      dure plus longtemps que le temps défini. solution inefficace ou
+      erreur algorithmique dans le programme.</p>
+    <p><span>Presentation Error (PE)</span> - Fichier de sortie OUTPUT.TXT manquant. Fichier non créé
+      nom de fichier incorrect ou plantage du programme avant l'ouverture du fichier de sortie.</p>
+    <p><span>Compilation error (CE)</span> - Erreur de compilation. Non généré à la suite de la compilation
+      exécutable. Erreur de syntaxe dans le programme ou mal spécifié
+      extension de fichier. Il est possible que lors de l'implémentation en Java, une classe ait été utilisée,
+      différent de Main.</p>
+    <p><span>Memory limit exceeded (ML)</span>- La limite de mémoire spécifiée dans la tâche a été dépassée. Programme
+      utilise plus que la taille de mémoire définie. Algorithme inefficace, ou
+      utilisation inutile de la mémoire</p>
+    <p><span>Runtime error (RE)</span> - Erreur d'exécution. Le programme s'est terminé avec un résultat non nul
+      Code de retour. Dans ce cas, le résultat du travail n'est pas vérifié. Peut-être au programme
+      il y a eu accès à un élément inexistant du tableau, division par zéro, etc.
+      Le programme C++ peut ne pas se terminer par une instruction "return 0", ou pour une autre raison.
+      renvoyé un code retour différent de zéro.</p>
   </div>
   <h1 v-else>
-    загрузка
+    chargement
   </h1>
 </template>
 

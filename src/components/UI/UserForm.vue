@@ -1,17 +1,17 @@
 <template>
   <form class="form__user" @submit.prevent>
     <TextInput
-        placeholder="Фамилия"
+        placeholder="Nom de famille"
         type="text"
         v-model="user.sename"
     />
     <TextInput
-        placeholder="Имя"
+        placeholder="Nom"
         type="text"
         v-model="user.name"
     />
     <TextInput
-        placeholder="Отчество"
+        placeholder="Prénom"
         type="text"
         v-model="user.secondname"
     />
@@ -29,12 +29,12 @@
         v-model="user.data.learning_stage"
     />
     <TextInput
-        placeholder="Логин"
+        placeholder="Login"
         type="text"
         v-model="user.login"
     />
     <TextInput
-        placeholder="Пароль"
+        placeholder="mot de passe"
         type="text"
         v-model="user.password"
     />
@@ -68,7 +68,7 @@ export default {
         sename: "",
         secondname: "",
         data: {
-          learning_stage: "9 класс",
+          learning_stage: "9e année",
           type_education: 1,
           name_organization: ""
         },
@@ -85,45 +85,45 @@ export default {
         sename: "",
         secondname: "",
         data: {
-          learning_stage: "9 класс",
+          learning_stage: "9e année",
           type_education: 1,
           name_organization: ""
         },
         password: ""
       },
       typeEducation: [
-        {value: 1, text: "Школа"},
-        {value: 2, text: "Вуз"},
-        {value: 3, text: "Коледж"},
-        {value: 4, text: "Иные"}
+        {value: 1, text: "École"},
+        {value: 2, text: "Université"},
+        {value: 3, text: "Collège"},
+        {value: 4, text: "Autre"}
       ],
       nameOrganization: [],
       selectLearningStage: {
         1: [
-          { text: '8 класс', value: '8 класс' },
-          { text: '9 класс', value: '9 класс' },
-          { text: '10 класс', value: '10 класс' },
-          { text: '11 класс', value: '11 класс' }
+          { text: '8e année', value: '8e année' },
+          { text: '9e année', value: '9e année' },
+          { text: '10 e année', value: '10 e année' },
+          { text: '11e année', value: '11e année' }
         ],
         2: [
-          { text: '1 курс', value: '1 курс' },
-          { text: '2 курс', value: '2 курс' },
-          { text: '3 курс', value: '3 курс' },
-          { text: '4 курс', value: '4 курс' }
+          { text: '1 cours', value: '1 cours' },
+          { text: '2 cours', value: '2 cours' },
+          { text: '3 cours', value: '3 cours' },
+          { text: '4 cours', value: '4 cours' }
         ],
         3: [
-          { text: '1 курс', value: '1 курс' },
-          { text: '2 курс', value: '2 курс' },
-          { text: '3 курс', value: '3 курс' },
-          { text: '4 курс', value: '4 курс' }
+          { text: '1 cours', value: '1 cours' },
+          { text: '2 cours', value: '2 cours' },
+          { text: '3 cours', value: '3 cours' },
+          { text: '4 cours', value: '4 cours' }
         ],
         4: [
-          { text: 'Обучение', value: 'Обучение' },
+          { text: 'Éducation', value: 'Éducation' },
         ],
       },
       selectTypeUser: [
-        { text: 'Администратор', value: 1 },
-        { text: 'Пользователь', value: 2 }
+        { text: 'Administrateur', value: 1 },
+        { text: 'Utilisateur', value: 2 }
       ],
     }
   },

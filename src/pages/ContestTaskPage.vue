@@ -3,9 +3,9 @@
     <header-task>{{typeTaskFilter(targetTask.type_task)}} {{targetTask.name_task}}</header-task>
     <castom-table :headers="headersTableSettings" :contents="contentsTableSettings" class="task__table"/>
     <description-task v-html="targetTask.description" class="desc"/>
-    <header-task>Формат ввода</header-task>
+    <header-task>Format d'entrée</header-task>
     <description-task v-html="targetTask.description_input"  class="desc"/>
-    <header-task>Формат вывода</header-task>
+    <header-task>Format de sortie</header-task>
     <description-task v-html="targetTask.description_output"  class="desc"/>
     <test-view
         class="test__view"
@@ -18,7 +18,7 @@
     <castom-table v-if="isLoadMain" class="task__table" :headers="headersTableTests" :contents="contentsTableTests"/>
     <div class="form__send_answer">
       <form-send-answer @sendAnswer="sendAnswer" v-if="!$store.state.isCloseContest" ref="sendForm"/>
-      <h3>Осталось попыток {{numberShipments}}</h3>
+      <h3>Essais restants {{numberShipments}}</h3>
     </div>
     <table-answer :answers="listAnswer" :idTask="targetTask.id" :idContest="idContest" class="task__table"/>
   </div>
@@ -66,18 +66,18 @@ export default {
   },
   computed: {
     headersTableSettings(){
-      return ["Ограничение времени", "Ограничение памяти", "Ввод", "Вывод"]
+      return ["Limite de temps", "Limite de mémoire", "Saisir", "Conclusion"]
     },
     contentsTableSettings(){
       return [{
-        "timeWork": this.targetTask.time_work + " сек",
+        "timeWork": this.targetTask.time_work + " seconde",
         "sizeRaw":  this.targetTask.size_raw + " Mb",
         "typeInput":  this.typeInputFilter(this.targetTask.type_input),
         "typeOutput":  this.typeOutputFilter(this.targetTask.type_output),
       }]
     },
     headersTableTests(){
-      return ["Условия", "Необходимые тесты"]
+      return ["Conditions", "Examens requis"]
     },
     contentsTableTests(){
       return this.targetTask.view_settings.map((val)=>{
@@ -103,15 +103,15 @@ export default {
     },
     typeInputFilter(val) {
       const info = {
-        1: "стандартный ввод",
-        2: "файл input.txt"
+        1: "entrée standard",
+        2: "fichier input.txt"
       }
       return info[val]
     },
     typeOutputFilter(val) {
       const info = {
-        1: "стандартный вывод",
-        2: "файл output.txt"
+        1: "sortie standard",
+        2: "fichier output.txt"
       }
       return info[val]
     },
@@ -178,9 +178,9 @@ export default {
 
       this.websocketServer.onclose = function (event) {
         if (event.wasClean) {
-          alert(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
+          alert(`[close] Connexion fermée proprement, code=${event.code} cause=${event.reason}`);
         } else {
-          alert('[close] Соединение прервано');
+          alert('[close] Connexion interrompue');
         }
       };
 

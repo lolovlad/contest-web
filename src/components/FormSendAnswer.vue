@@ -2,7 +2,7 @@
   <div class="form__send">
     <combo-box :data="compilationComboBox" v-model="selectLanguage" v-if="isLoadCompilations"/>
     <file-input v-model:data="fileData" ref="fileInput"/>
-    <AgreeButton @click="sendAnswer">Отправить</AgreeButton>
+    <AgreeButton @click="sendAnswer">Envoyer</AgreeButton>
   </div>
 </template>
 

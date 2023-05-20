@@ -3,20 +3,20 @@
     <img src="../static/logo.png">
     <h1>{{contest.name_contest}}</h1>
     <div class="navbar__info">
-      <h3>Начало контеста: {{dateView(contest.datetime_start)}}</h3>
-      <h3>Окончание контеста: {{dateView(contest.datetime_end)}}</h3>
-      <h3>Длительность: {{distante}}</h3>
+      <h3>début du cours: {{dateView(contest.datetime_start)}}</h3>
+      <h3>fin de parcours: {{dateView(contest.datetime_end)}}</h3>
+      <h3>Durée: {{distante}}</h3>
     </div>
 
     <div class="navbar__link">
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/`)">Главная страница</AgreeButton>
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/result`)">Таблица участников</AgreeButton>
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/tasks`)">Задания</AgreeButton>
+      <AgreeButton @click="$router.push(`/contest/${contest.id}/`)">théorie</AgreeButton>
+      <!--<AgreeButton @click="$router.push(`/contest/${contest.id}/result`)">Таблица участников</AgreeButton>-->
+      <AgreeButton @click="$router.push(`/contest/${contest.id}/tasks`)">Tâches</AgreeButton>
     </div>
 
     <div class="navbar__button">
-      <agree-button @click="$router.push(`/menu`)">Выйти</agree-button>
-      <agree-button @click="$emit('timerClose')">Закончить</agree-button>
+      <agree-button @click="$router.push(`/menu`)">Sortir</agree-button>
+      <!--<agree-button @click="$emit('timerClose')">finir</agree-button>-->
     </div>
 
     <div class="navbar__timer">

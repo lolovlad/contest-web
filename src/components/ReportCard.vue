@@ -1,9 +1,9 @@
 <template>
   <div class="block__main">
-    <h3>Итог тестирования {{reportChunk.state_test}}</h3>
-    <h3>Количество баллов {{reportChunk.point_sum}}</h3>
-    <h3>Последний номер теста {{reportChunk.number_test}}</h3>
-    <h3>Количетсов тестов {{countTests}}</h3>
+    <h3>Résultat du test {{reportChunk.state_test}}</h3>
+    <h3>Nombre de points {{reportChunk.point_sum}}</h3>
+    <h3>dernier numéro de test {{reportChunk.number_test}}</h3>
+    <h3>Nombre d'essais {{countTests}}</h3>
     <castom-table class="block__table" v-if="countTests > 0" :headers="headerReportTable" :contents="contentReportTable"/>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   },
   computed:{
     headerReportTable(){
-      return ["Время выполениея", "потребление памяти", "Вердикт"]
+      return ["Délai de mise en œuvre", "consommation de mémoire", "Verdict"]
     },
     contentReportTable(){
       const lenArr = this.reportChunk.list_test_report.length

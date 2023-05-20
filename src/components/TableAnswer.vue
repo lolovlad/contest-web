@@ -17,7 +17,7 @@
         <td>{{answer.memory_size}} Mb</td>
         <td>{{answer.number_test}}</td>
         <td>{{answer.points}}</td>
-        <td><agree-button @click="$router.push(`/contest/${idContest}/report/${idTask}/${answer.id}`)">отчет</agree-button></td>
+        <td><agree-button @click="$router.push(`/contest/${idContest}/report/${idTask}/${answer.id}`)">rapport</agree-button></td>
       </tr>
     </tbody>
   </table>
@@ -48,17 +48,17 @@ export default {
   computed:{
     headersTableAnswer(){
       return [
-        "Время отправки",
+        "Délai d'expédition",
         "ID",
-        "Пользователь",
-        "№ Задачи",
-        "Компилятор",
-        "Итог",
-        "Время",
-        "Память",
-        "№ Тест",
-        "Баллы",
-        "Отчет",
+        "Utilisateur",
+        "№ Tâches",
+        "Compilateur",
+        "Résultat",
+        "Temps",
+        "Mémoire",
+        "№ Test",
+        "Points",
+        "Rapport",
       ]
     },
     options(){

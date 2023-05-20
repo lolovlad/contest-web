@@ -6,21 +6,21 @@
       </div>
       <div class="main__card">
         <div class="info">
-          <p>Логин: {{userData.login}}</p>
-          <p>Тип пользователя: {{typeUser(userData.type)}}</p>
+          <p>Login: {{userData.login}}</p>
+          <p>Type d'utilisateur: {{typeUser(userData.type)}}</p>
         </div>
         <div class="info__data" v-if="userData.data">
           <p>{{userData.data.learning_stage}}</p>
           <p>{{userData.data.name_organization}}</p>
         </div>
         <div class="info__data" v-else>
-          <p>Не определнно</p>
+          <p>Pas certain</p>
         </div>
       </div>
     </div>
     <div class="buttons">
-      <agree-button @click="$emit('deleteUser')">Удалить</agree-button>
-      <agree-button @click="$emit('updateUser')">Редактировать</agree-button>
+      <agree-button @click="$emit('deleteUser')">Supprimer</agree-button>
+      <agree-button @click="$emit('updateUser')">Modifier</agree-button>
     </div>
   </div>
 </template>
@@ -38,8 +38,8 @@ export default {
   methods: {
     typeUser(typeUser){
       const typeUserD = {
-        1: "Администратор",
-        2: "Пользователь"
+        1: "Administrateur",
+        2: "Utilisateur"
       }
       return typeUserD[typeUser]
     }

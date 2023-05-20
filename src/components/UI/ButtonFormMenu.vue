@@ -1,8 +1,8 @@
 <template>
   <div class="btn__menu">
-    <AgreeButton v-if="$props.isAdd" @click="$emit('add')">Добавить</AgreeButton>
-    <AgreeButton v-else @click="$emit('update')">Сохранить</AgreeButton>
-    <AgreeButton @click="$emit('clear')">Очистить</AgreeButton>
+    <AgreeButton v-if="$props.isAdd" @click="$emit('add')">Ajouter</AgreeButton>
+    <AgreeButton v-else @click="$emit('update')">Sauvegarder</AgreeButton>
+    <AgreeButton @click="$emit('clear')">Clair</AgreeButton>
   </div>
 </template>
 

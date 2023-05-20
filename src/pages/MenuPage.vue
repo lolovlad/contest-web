@@ -1,7 +1,7 @@
 <template>
   <navbar-user></navbar-user>
   <div class="main">
-    <h1>Меню пользователя</h1>
+    <h1>Carte des cours</h1>
     <ListContest :contests="contests">
 
     </ListContest>

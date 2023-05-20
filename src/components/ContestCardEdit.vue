@@ -5,7 +5,7 @@
     </div>
     <div class="main_info_contest">
       <h2>{{contest.name_contest}}</h2>
-      <h2>{{typeContest}}</h2>
+      <!--<h2>{{typeContest}}</h2>-->
       <h2>{{stateContest}}</h2>
     </div>
   </div>
@@ -23,20 +23,20 @@ export default {
   computed: {
     typeContest() {
       if(this.contest.type === 1){
-        return "Не командная"
+        return "Pas de commande"
       }else{
-        return "Командная"
+        return "Commande"
       }
     },
     stateContest(){
       if(this.contest.type === 0){
-        return "Зарегестрированна"
+        return "Inscrit"
       }else if(this.contest.type === 2){
-        return "Законченна"
+        return "Fini"
       }else if(this.contest.type === 1){
-        return "Проходит"
+        return "Passe"
       }
-      return "браааа"
+      return "braaaa"
     }
   },
 }
