@@ -1,13 +1,13 @@
 <template>
   <div class="test__main">
-    <h2>Номер теста {{numberTest}}</h2>
+    <h2>Numéro d'épreuve {{numberTest}}</h2>
     <div class="test__body">
       <div class="test__chunk">
-        <h4>Ввод</h4>
+        <h4>Saisir</h4>
         <p>{{examplePrintVariable}}</p>
       </div>
       <div class="test__chunk">
-        <h4>Ввод</h4>
+        <h4>Conclusion</h4>
         <p>{{examplePrintAnswer}}</p>
       </div>
     </div>
