@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <img src="../static/logo.png">
-    <FormLogin :error="error" @signin="signin">
+    <FormLogin :error="error" @signin="login">
 
     </FormLogin>
     <h3></h3>
@@ -10,7 +10,6 @@
 
 <script>
 import FormLogin from "@/components/FormLogin";
-import axios from "axios";
 export default {
   components: {
     FormLogin
@@ -21,29 +20,23 @@ export default {
     }
   },
   methods: {
-    async signin(login, password){
-      try{
-        const payload = `grant_type=&username=${login}&password=${password}&client_id=&client_secret=`
-        const response = await axios.post(
-            `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/login/sign-in/`,
-
-            payload,
-            {
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'accept': 'application/json'
-              }
-            }
-        );
-        this.$store.commit("setToken", response.data.access_token)
-        this.$store.commit("setTypeUser", response.data.type_user)
-        this.redirect(response.data.type_user)
-      } catch (e){
-        this.error = e
-      }
+    login(login, password) {
+      this.$store.dispatch('auth/login', {url: '/login/sign-in', email: login, password: password})
+          .then(
+              (response) => {
+                console.log(response.status !== 200)
+                if (response.status !== 200) {
+                  this.error = response.status.message
+                } else {
+                  this.redirect(response.data.user.type)
+                }
+              })
+          .catch(() => {
+            this.error = "неверный логин или пароль"
+          })
     },
     redirect(typeUser){
-      if (typeUser === 1){
+      if (typeUser.name === "admin"){
         this.$router.push('/admin')
       }else{
         this.$router.push('/menu')

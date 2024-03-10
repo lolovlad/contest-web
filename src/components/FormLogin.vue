@@ -11,7 +11,7 @@
         v-model="password"
     />
     <AgreeButton class="btn__agr" @click="signin">вход</AgreeButton>
-    <label>{{error}}</label>
+    <span class="helper-text" data-error="wrong" data-success="right">{{error}}</span>
   </form>
 </template>
 

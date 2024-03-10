@@ -1,53 +1,81 @@
 <template>
-  <form class="form__user" @submit.prevent>
-    <TextInput
-        placeholder="Фамилия"
-        type="text"
-        v-model="user.sename"
-    />
-    <TextInput
-        placeholder="Имя"
-        type="text"
-        v-model="user.name"
-    />
-    <TextInput
-        placeholder="Отчество"
-        type="text"
-        v-model="user.secondname"
-    />
-    <ComboBox
-        :data="typeEducation"
-        v-model="user.data.type_education"
-        @change="switchSelectEdu($event)"
-    />
-    <ComboBox
-        :data="nameOrganizationData"
-        v-model="user.data.name_organization"
-    />
-    <ComboBox
-        :data="targetLearningStage"
-        v-model="user.data.learning_stage"
-    />
-    <TextInput
-        placeholder="Логин"
-        type="text"
-        v-model="user.login"
-    />
-    <TextInput
-        placeholder="Пароль"
-        type="text"
-        v-model="user.password"
-    />
-    <ComboBox
-        :data="selectTypeUser"
-        v-model="user.type"
-    />
-    <ButtonFormMenu :is-add="isAddUser"
-                    @add="$emit('add', user)"
-                    @update="$emit('update', user)"
-                    @clear="clearForm"
-    />
-  </form>
+  <div class="row">
+    <form class="col s12" @submit.prevent>
+      <div class="row">
+        <div class="col s4">
+          <TextInput
+              placeholder="Фамилия"
+              type="text"
+              v-model="user.sename"
+          />
+        </div>
+        <div class="col s4">
+          <TextInput
+              placeholder="Имя"
+              type="text"
+              v-model="user.name"
+          />
+        </div>
+        <div class="col s4">
+          <TextInput
+              placeholder="Отчество"
+              type="text"
+              v-model="user.secondname"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s3">
+          <ComboBox
+              v-model="typeEdu"
+              :data="publishedTypeEdu"
+              @change="switchSelectEdu($event.target.value)"
+          />
+        </div>
+        <div class="col s3">
+          <ComboBox
+              :data="targetRange"
+              v-model="user.stage_edu"
+          />
+        </div>
+        <div class="col s6">
+          <ComboBox
+              :data="publishedNameOrganization"
+              v-model="user.id_edu_organization"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <TextInput
+              placeholder="Логин"
+              type="text"
+              v-model="user.login"
+          />
+        </div>
+        <div class="col s6">
+          <TextInput
+              placeholder="Пароль"
+              type="text"
+              v-model="user.password"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <ComboBox
+              :data="publishedTypeUser"
+              v-model="user.id_type"
+          />
+        </div>
+      </div>
+      <ButtonFormMenu :is-add="isAddUser"
+                      @add="$emit('add', user)"
+                      @update="$emit('update', user, idUser)"
+                      @clear="clearForm"
+      />
+    </form>
+  </div>
 </template>
 
 <script>
@@ -61,116 +89,121 @@ export default {
   data(){
     return{
       isAddUser: true,
-      userChemsa: {
-        login: "",
-        type: 1,
-        name: "",
-        sename: "",
-        secondname: "",
-        data: {
-          learning_stage: "9 класс",
-          type_education: 1,
-          name_organization: ""
-        },
-        password: ""
+      typeEdu: 1,
+      userScheme: {
+        login: null,
+        id_type: null,
+        name: null,
+        sename: null,
+        secondname: null,
+        password: null,
+        id_edu_organization: null,
+        stage_edu: null
       },
-
-
-
 
       user: {
-        login: "",
-        type: 1,
-        name: "",
-        sename: "",
-        secondname: "",
-        data: {
-          learning_stage: "9 класс",
-          type_education: 1,
-          name_organization: ""
-        },
-        password: ""
+        login: null,
+        id_type: null,
+        name: null,
+        sename: null,
+        secondname: null,
+        password: null,
+        id_edu_organization: null,
+        stage_edu: null
       },
-      typeEducation: [
-        {value: 1, text: "Школа"},
-        {value: 2, text: "Вуз"},
-        {value: 3, text: "Коледж"},
-        {value: 4, text: "Иные"}
-      ],
+      selectTypeEdu: [],
       nameOrganization: [],
-      selectLearningStage: {
-        1: [
-          { text: '8 класс', value: '8 класс' },
-          { text: '9 класс', value: '9 класс' },
-          { text: '10 класс', value: '10 класс' },
-          { text: '11 класс', value: '11 класс' }
-        ],
-        2: [
-          { text: '1 курс', value: '1 курс' },
-          { text: '2 курс', value: '2 курс' },
-          { text: '3 курс', value: '3 курс' },
-          { text: '4 курс', value: '4 курс' }
-        ],
-        3: [
-          { text: '1 курс', value: '1 курс' },
-          { text: '2 курс', value: '2 курс' },
-          { text: '3 курс', value: '3 курс' },
-          { text: '4 курс', value: '4 курс' }
-        ],
-        4: [
-          { text: 'Обучение', value: 'Обучение' },
-        ],
-      },
-      selectTypeUser: [
-        { text: 'Администратор', value: 1 },
-        { text: 'Пользователь', value: 2 }
-      ],
+      selectLearningStage: {},
+      selectTypeUser: [],
+      targetRange: [],
+      idUser: 0
     }
   },
   computed: {
-    targetLearningStage(){
-      return this.selectLearningStage[this.user.data.type_education]
+    publishedTypeUser() {
+      return this.selectTypeUser.map((data) => {
+        return {
+          value: data.id,
+          text: data.name
+        }
+      })
     },
-    nameOrganizationData(){
-      return this.nameOrganization.map((val)=>{
-        return{
-          value: val.name_organizations,
-          text: val.name_organizations
+    publishedTypeEdu(){
+      return this.selectTypeEdu.map((data) => {
+        return {
+          value: data.id,
+          text: data.name
+        }
+      })
+    },
+    publishedNameOrganization(){
+      return this.nameOrganization.map((data) => {
+        return {
+          value: data.uuid,
+          text: data.name_organizations
         }
       })
     }
   },
   methods: {
-    async switchSelectEdu(event){
-      const value = event.target.value
+    async getTypeUser(){
+      const response = await axios.get(
+          `users/type_user/all`
+      )
+      this.selectTypeUser = response.data
+    },
+    async getTypeEdu(){
+      const response = await axios.get(
+          `educational_organizations/type_edu/`
+      )
+      this.selectTypeEdu = response.data
+
+
+      for(const data of response.data){
+        let ranges = []
+        for(let i = data.start_range; i <= data.end_range; i++){
+          ranges.push({value: `${i} ${data.postfix}`, text: `${i} ${data.postfix}`})
+        }
+        this.selectLearningStage[data.id] = ranges
+      }
+    },
+
+    async switchSelectEdu(value){
+      this.targetRange = this.selectLearningStage[value]
       await this.selectUpdateTargetEdu(value)
     },
-    async selectUpdateTargetEdu(){
+
+    async selectUpdateTargetEdu(value){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/educational_organizations/${this.user.data.type_education}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `educational_organizations/by_type/${value}`,
       )
       this.nameOrganization = response.data
     },
     clearForm(){
-      this.user = JSON.parse(JSON.stringify(this.userChemsa))
+      this.user = JSON.parse(JSON.stringify(this.userScheme))
+    },
+
+    async setUser(userTarget){
+      this.idUser = userTarget.id
+      this.user.login = userTarget.login
+      this.user.id_type = userTarget.type.id
+      this.user.name = userTarget.name
+      this.user.sename = userTarget.sename
+      this.user.secondname = userTarget.secondname
+      this.user.password = ""
+      this.user.id_edu_organization = userTarget.edu_organization.uuid
+      this.user.stage_edu = userTarget.stage_edu
+      this.typeEdu = userTarget.edu_organization.type_organizations.id
+      await this.switchSelectEdu(this.typeEdu)
+
     }
   },
   mounted() {
-    this.selectUpdateTargetEdu()
+    this.getTypeUser()
+    this.getTypeEdu()
   }
 }
 </script>
 
 <style scoped>
-.form__user{
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 80%;
-}
 </style>

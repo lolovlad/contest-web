@@ -1,26 +1,20 @@
 <template>
-  <div class="user__card">
-    <div class="main__info">
-      <div class="header__card">
-        <h1>{{userData.name}} {{userData.sename}} {{userData.secondname}}</h1>
+  <div class="card blue-grey darken-1">
+    <div class="card-content white-text">
+      <span class="card-title">{{userData.sename}} {{userData.name[0]}}. {{userData.secondname[0]}}.</span>
+      <p>Логин: {{userData.login}}</p>
+      <p>Тип пользователя: {{userData.type.name}}</p>
+      <div v-if="userData.edu_organization">
+        <p>{{userData.stage_edu}}</p>
+        <p>{{userData.edu_organization.name_organizations}}</p>
       </div>
-      <div class="main__card">
-        <div class="info">
-          <p>Логин: {{userData.login}}</p>
-          <p>Тип пользователя: {{typeUser(userData.type)}}</p>
-        </div>
-        <div class="info__data" v-if="userData.data">
-          <p>{{userData.data.learning_stage}}</p>
-          <p>{{userData.data.name_organization}}</p>
-        </div>
-        <div class="info__data" v-else>
-          <p>Не определнно</p>
-        </div>
+      <div v-else>
+        <p>Не определнно</p>
       </div>
     </div>
-    <div class="buttons">
-      <agree-button @click="$emit('deleteUser')">Удалить</agree-button>
-      <agree-button @click="$emit('updateUser')">Редактировать</agree-button>
+    <div class="card-action">
+      <agree-button @click="$emit('deleteUser', userData.id)">Удалить</agree-button>
+      <agree-button @click="$emit('updateUser', userData.id)">Редактировать</agree-button>
     </div>
   </div>
 </template>
@@ -36,43 +30,9 @@ export default {
     }
   },
   methods: {
-    typeUser(typeUser){
-      const typeUserD = {
-        1: "Администратор",
-        2: "Пользователь"
-      }
-      return typeUserD[typeUser]
-    }
   }
 }
 </script>
 
 <style scoped>
-.user__card{
-  display: flex;
-  justify-content: space-between;
-  height: 150px;
-  background: #0273bb;
-  border-radius: 7px;
-  color: white;
-  padding: 20px;
-}
-.buttons{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 7px;
-}
-.main__info{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-.main__card{
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  font-size: 20px;
-}
 </style>

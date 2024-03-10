@@ -2,8 +2,8 @@
   <div class="main" v-if="userLoad">
     <user-list>
       <UserCard v-for="user in listUsers" :key="user.id" :userData="user"
-                @deleteUser="$emit('deleteUser', user.id)"
-                @updateUser="$emit('updateUser', user.id)"/>
+                @deleteUser="deleteUser"
+                @updateUser="updateUser"/>
     </user-list>
     <CastomPagination :countPage="countPage" class="pag" @updatePage="getListUser"/>
   </div>
@@ -23,6 +23,7 @@ import CastomModelWindow from "@/components/UI/CastomModelWindow";
 import UserForm from "@/components/UI/UserForm";
 import FixedButton from "@/components/UI/FixedButton";
 import UserCard from "@/components/UI/UserCard";
+import M from "materialize-css"
 export default {
   name: "AdminUserPage",
   components: {UserCard, FixedButton, UserForm, CastomModelWindow, UserList, CastomLoader, CastomPagination},
@@ -40,12 +41,7 @@ export default {
 
     async getUser(idUser){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users/${idUser}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `users/${idUser}`
       )
       return response.data
     },
@@ -53,12 +49,7 @@ export default {
     async getListUser(page=1){
       const typeUser = "all"
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users/?number_page=${page}&type_user=${typeUser}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `users/?number_page=${page}&type_user=${typeUser}`
       )
       this.listUsers = response.data
       this.countPage = parseInt(response.headers["x-count-page"])
@@ -66,62 +57,59 @@ export default {
     },
     async deleteUser(idUser){
       const response = await axios.delete(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users/${idUser}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
+          `users/${idUser}`,
+      ).catch(
+          (e) => {
+            M.toast({html: e.response.statusText})
           }
       )
       response.status
       await this.getListUser()
-      await this.getListUser()
+      M.toast({html: "Пользователь удален"})
     },
+
     async updateUser(idUser){
-      this.$refs.userForm.user = await this.getUser(idUser)
+      let user = await this.getUser(idUser)
+      await this.$refs.userForm.setUser(user)
       this.$refs.userForm.user.password = ""
       this.$refs.userForm.isAddUser = false
       this.$refs.modelWindow.open()
-      console.log(idUser)
     },
+
     async addUser(){
       this.$refs.userForm.isAddUser = true
       this.$refs.modelWindow.open()
     },
-    async add(user){
-      user.data.type_education = parseInt(user.data.type_education)
-      user.type = parseInt(user.type)
-      const response = await axios.post(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users`,
-          user,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
-      )
-      this.$refs.userForm.clearForm()
-      this.$refs.modelWindow.close()
-      await this.getListUser()
-      response.status
-    },
-    async update(user){
-      user.data.type_education = parseInt(user.data.type_education)
-      console.log(user)
-      const response = await axios.put(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users/`,
-          user,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
-      )
-      response.status
-      this.$refs.userForm.clearForm()
-      this.$refs.modelWindow.close()
-      await this.getListUser()
 
+    async add(user){
+      user.id_type = parseInt(user.id_type)
+      await axios.post(
+          `users/`,
+          user,
+      ).catch((e) => {
+            M.toast({html: e.response.statusText})
+          }
+      )
+      this.$refs.userForm.clearForm()
+      this.$refs.modelWindow.close()
+      await this.getListUser()
+      M.toast({html: "Пользователь добавлен"})
+    },
+    async update(user, idUser){
+      user.id_type= parseInt(user.id_type)
+      console.log(user)
+      await axios.put(
+          `users/${idUser}`,
+          user,
+      ).catch(
+          (e) => {
+            M.toast({html: e.response.statusText})
+          }
+      )
+      this.$refs.userForm.clearForm()
+      this.$refs.modelWindow.close()
+      await this.getListUser()
+      M.toast({html: "Пользователь обнавлен"})
     }
   },
   mounted() {

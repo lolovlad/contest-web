@@ -1,5 +1,6 @@
 import LoginPage from "@/pages/LoginPage";
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
+import {auth as $store} from "@/store/auth.model";
 import MenuPage from "@/pages/MenuPage";
 import AdminPage from "@/pages/AdminPage";
 import ContestPage from "@/pages/ContestPage";
@@ -20,18 +21,33 @@ import AdminTaskSettingsForm from "@/pages/AdminContestPages/Task/AdminTaskSetti
 const routes = [
     {
         path: '/',
-        component: LoginPage
+        component: LoginPage,
+        beforeEnter: (to, from, next) => {
+            const initialState = $store.state
+            console.log(initialState.status.loggedIn)
+            if(initialState.status.loggedIn){
+                if(initialState.user.type.name === "user") {
+                    next("/menu");
+                }
+                else {
+                    next("/admin");
+                }
+            }else{
+                next(true)
+            }
+        }
     },
     {
         path: '/menu',
         component: MenuPage,
         beforeEnter: (to, from, next) => {
-            if(sessionStorage.getItem("token") !== null){
-                if(parseInt(sessionStorage.getItem("typeUser")) === 2) {
+            const initialState = $store.state
+            if(initialState.status.loggedIn){
+                if(initialState.user.type.name === "user") {
                     next();
                 }
                 else {
-                    next(false);
+                    next("/admin");
                 }
             }else{
                 next('/')
@@ -96,8 +112,9 @@ const routes = [
             },
         ],
         beforeEnter: (to, from, next) => {
-            if(sessionStorage.getItem("token") !== null){
-                if(parseInt(sessionStorage.getItem("typeUser")) === 1) {
+            const initialState = $store.state;
+            if(initialState.status.loggedIn){
+                if(initialState.user.type.name === "admin") {
                     next();
                 }
                 else {
@@ -130,8 +147,9 @@ const routes = [
             }
         ],
         beforeEnter: (to, from, next) => {
-            if(sessionStorage.getItem("token") !== null){
-                if(parseInt(sessionStorage.getItem("typeUser")) === 2) {
+            const initialState = $store.state
+            if(initialState.status.loggedIn){
+                if(initialState.user.type.name === "user") {
                     next();
                 }
                 else {

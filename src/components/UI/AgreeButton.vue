@@ -1,5 +1,5 @@
 <template>
-  <button class="btn">
+  <button class="waves-effect waves-light btn red darken-4" style="margin-right: 5px">
     <slot></slot>
   </button>
 </template>
@@ -11,19 +11,7 @@ export default {
 </script>
 
 <style scoped>
-.btn{
-  padding: 10px 20px;
-  color: #ffffff;
+.color__btn__agree{
   background: #b50034;
-  border: none;
-  font-size: 17px;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100%;
-}
-
-.btn:hover{
-  color: black;
-  background: #ffffff;
 }
 </style>

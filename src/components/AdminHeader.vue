@@ -1,21 +1,39 @@
 <template>
-  <div class="header__main">
-    <ul class="menu">
-      <li><a @click="$router.push(`/admin/user/`)">Пользователи</a></li>
-      <li><a @click="$router.push(`/admin/contest/`)">Контесты</a></li>
-      <li><a @click="$router.push(`/admin/team/`)">Команды</a></li>
-    </ul>
-    <div class="btn__menu">
-      <agree-button>Выход</agree-button>
+  <nav>
+    <div class="nav-wrapper red darken-4">
+      <a href="#" class="brand-logo">Админ панель</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a @click="$router.push(`/admin/user/`)">Пользователи</a></li>
+        <li><a @click="$router.push(`/admin/contest/`)">Контесты</a></li>
+        <li><a @click="$router.push(`/admin/team/`)">Команды</a></li>
+        <li><a class="dropdown-trigger" data-target="dropdownProfile" ref="dropdownProfile">Профиль</a></li>
+      </ul>
     </div>
-  </div>
+    <ul class="dropdown-content" id='dropdownProfile'>
+      <li><a href="">Профиль</a></li>
+      <li class="divider"></li>
+      <li><a @click="logout">Выход</a></li>
+    </ul>
+  </nav>
 </template>
 
 <script>
-import AgreeButton from "@/components/UI/AgreeButton";
+import M from "materialize-css";
 export default {
   name: "AdminHeader",
-  components: {AgreeButton}
+  mounted() {
+    const elem = this.$refs.dropdownProfile;
+    this.modelInstance = M.Dropdown.init(elem, {
+      alignment: "right",
+      coverTrigger: false
+    });
+  },
+  methods:{
+    logout(){
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 

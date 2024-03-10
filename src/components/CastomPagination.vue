@@ -1,6 +1,12 @@
 <template>
   <div class="list__page">
-    <h1 v-for="i in countPage" :key="i" @click="getCurPage(i)">{{i}}</h1>
+    <ul class="pagination">
+      <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+      <li :class="{active: curPage === i}" @click="getCurPage(i)" v-for="i in countPage" :key="i">
+        <a>{{i}}</a>
+      </li>
+      <li class="waves-effect"><a><i class="material-icons">chevron_right</i></a></li>
+    </ul>
   </div>
 </template>
 
@@ -43,5 +49,8 @@ export default {
   cursor: pointer;
   background: #0273bb;
   text-align: center;
+}
+.pagination li.active{
+  background-color: #B71C1C;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <admin-header/>
-  <div class="main">
+  <div class="container">
     <router-view>
 
     </router-view>

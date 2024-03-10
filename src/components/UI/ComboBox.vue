@@ -1,30 +1,39 @@
 <template>
   <select
-      class="combobox"
       :value="modelValue"
-      @change="$emit('update:modelValue', parseInt($event.target.value))"
+      @change="$emit('update:modelValue', $event.target.value)"
+      class="browser-default"
   >
-    <option v-for="(val, index) in data" :value=val.value :key="index">{{ val.text }}</option>
+    <option v-for="val in data" :value=val.value :key="val.value">{{ val.text }}</option>
   </select>
 </template>
 
 <script>
+import M from "materialize-css"
 export default {
   props: {
-    modelValue: Number,
+    modelValue: [String, Number],
     data: {
-      type: Array
+      type: Array,
+      default: null
     }
+  },
+  data(){
+    return{
+      modelInstance: null
+    }
+  },
+  methods: {
+    initElem(){
+      const elem = this.$refs.selectInstance;
+      this.modelInstance = M.FormSelect.init(elem);
+    }
+  },
+  mounted() {
   },
   name: "ComboBox"
 }
 </script>
 
 <style scoped>
-.combobox{
-  font-size: 20px;
-  padding: 10px 50px;
-  border: 1px solid black;
-  width: 100%;
-}
 </style>

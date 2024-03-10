@@ -1,6 +1,8 @@
 <template>
   <div class="loader">
-    <h1>Загрузка</h1>
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
   </div>
 </template>
 
@@ -19,5 +21,11 @@ export default {
   align-items: center;
   justify-items: center;
   font-size: 50px;
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  padding: 20%;
 }
 </style>

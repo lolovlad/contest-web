@@ -1,6 +1,6 @@
 <template>
   <div class="btn__fix">
-    +
+    <a class="btn-floating btn-large waves-effect waves-light red darken-4 "><i class="material-icons">add</i></a>
   </div>
 </template>
 
@@ -12,20 +12,8 @@ export default {
 
 <style scoped>
 .btn__fix{
-  display: flex;
-  padding: 10px;
-  width: 70px;
-  height: 70px;
-  text-align: center;
-  border-radius: 50%;
-  background: #b50034;
-  color: white;
   position: fixed;
   right: 30px;
   top: 50%;
-  font-size: 40px;
-  font-weight: bolder;
-  justify-content: center;
-  cursor: pointer;
 }
 </style>
