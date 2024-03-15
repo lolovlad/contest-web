@@ -1,13 +1,16 @@
 <template>
-  <div class="card">
-    <div class="card__content">
-      <span class="card__title">{{task.name_task}}</span>
-      <p>{{task.type_task}}</p>
-    </div>
-    <div class="card__btn__menu">
-      <agree-button @click="$emit('update')">Редактировать</agree-button>
-      <agree-button @click="$emit('settings')">Настройки среды</agree-button>
-      <agree-button @click="$emit('delete')">Удалить</agree-button>
+  <div class="col s12 m6">
+    <div class="card light-blue darken-3">
+      <div class="card-content white-text">
+        <span class="card-title">{{task.name_task}}</span>
+        <p>{{task.complexity}}</p>
+        <p>{{task.type_task.description}}</p>
+      </div>
+      <div class="card-action">
+        <agree-button @click="$emit('update')">Редактировать</agree-button>
+        <agree-button v-if="task.type_task.name === 'programming'" @click="$emit('settings')">Настройки среды</agree-button>
+        <agree-button @click="$emit('delete')">Удалить</agree-button>
+      </div>
     </div>
   </div>
 </template>
@@ -26,25 +29,5 @@ export default {
 </script>
 
 <style scoped>
-.card{
-  display: flex;
-  justify-content: space-between;
-  height: 150px;
-  background: #0273bb;
-  border-radius: 7px;
-  color: white;
-  padding: 20px;
-}
-.card__btn__menu{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 7px;
-}
-.card__content{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
+
 </style>

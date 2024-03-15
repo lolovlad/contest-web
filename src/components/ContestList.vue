@@ -1,5 +1,5 @@
 <template>
-  <div class="contest__list">
+  <div class="row list">
     <slot></slot>
   </div>
 </template>
@@ -11,8 +11,7 @@ export default {
 </script>
 
 <style scoped>
-.contest__list{
-  display: flex;
-  gap: 20px;
+.list{
+  margin-top: 30px;
 }
 </style>

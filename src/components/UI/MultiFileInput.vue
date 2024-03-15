@@ -11,6 +11,7 @@
       <span>Выберите файлы</span>
     </label>
   </div>
+
   <div class="list__file">
     <slot></slot>
   </div>
@@ -23,7 +24,8 @@ export default {
     accept: {
       type: String,
       default: "*"
-    }
+    },
+
   },
   data(){
     return{

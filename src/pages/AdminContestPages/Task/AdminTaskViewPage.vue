@@ -1,12 +1,21 @@
 <template>
-  <TaskList class="list">
-    <TaskCardView v-for="(task, index) in tasks" :key="index" :task="task"
-                  @update="updateTask(task.id)"
-                  @delete="deleteTask(task.id)"
-                  @settings="updateSettings(task.id)"
-    />
-  </TaskList>
-  <FixedButton @click="$router.push(`/admin/contest/${idContest}/task/add`)"/>
+  <div v-if="taskLoad">
+    <div v-if="tasks.length > 0">
+      <TaskList class="list">
+        <TaskCardView v-for="(task, index) in tasks" :key="index" :task="task"
+                      @update="updateTask(task.uuid)"
+                      @delete="deleteTask(task.uuid)"
+                      @settings="updateSettings(task.uuid)"
+        />
+      </TaskList>
+      <CastomPagination :countPage="countPage" class="pag" @updatePage="getListTask"/>
+    </div>
+    <div v-else>
+      <h1>Нет зарегистрированных заданий</h1>
+    </div>
+  </div>
+  <castom-loader  v-else/>
+  <FixedButton @click="$router.push(`/admin/task/add`)"/>
 </template>
 
 <script>
@@ -14,45 +23,51 @@
 import FixedButton from "@/components/UI/FixedButton";
 import TaskList from "@/components/TaskList";
 import TaskCardView from "@/components/TaskCardView";
+import CastomPagination from "@/components/CastomPagination";
 import axios from "axios";
+import CastomLoader from "@/components/UI/CastomLoader";
+import M from "materialize-css";
 export default {
   name: "AdminTaskViewPage",
-  components: {TaskCardView, TaskList, FixedButton},
+  components: {CastomLoader, TaskCardView, TaskList, FixedButton, CastomPagination},
   data(){
     return{
-      idContest: this.$route.params.id_contest,
+      countPage: null,
+      taskLoad: false,
       tasks: []
     }
   },
   methods: {
-    async getListTask(){
+    async getListTask(page=1){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/get_list_task/${this.idContest}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `tasks/get_list_task/?num_page=${page}`,
       );
       this.tasks = response.data
+      this.countPage = parseInt(response.headers["x-count-page"])
+      console.log(this.tasks )
+      this.taskLoad = true
     },
+
     updateTask(idTask){
-      this.$router.push(`/admin/contest/${this.idContest}/task/edit/${idTask}`)
+      this.$router.push(`/admin/task/edit/${idTask}`)
     },
+
     async deleteTask(idTask){
-      const response = await axios.delete(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/${idTask}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
+      await axios.delete(
+          `tasks/${idTask}`
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            if(response.status === 200){
+              M.toast({html: "Задание удалено"})
+              this.getListTask()
             }
           }
       )
-      response.status
-      await this.getListTask()
     },
+
     updateSettings(idTask){
-      this.$router.push(`/admin/contest/${this.idContest}/task/${idTask}/settings`)
+      this.$router.push(`/admin/task/${idTask}/settings`)
     }
   },
   mounted() {

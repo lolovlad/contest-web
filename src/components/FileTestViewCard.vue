@@ -1,30 +1,23 @@
 <template>
-  <div class="file__card">
-    <h2>{{name}}</h2>
-    <div class="btn__del">
-      <agree-button @click="$emit('deleteFile')">x</agree-button>
-    </div>
-  </div>
+  <ul class="collection">
+    <li class="collection-item" v-for="(obj, index) in listNameFiles" :key="index">
+      <div>
+        {{obj.name}}
+        <a @click="$emit('deleteFile', index)" class="secondary-content"><i class="material-icons">close</i></a>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <script>
-import AgreeButton from "@/components/UI/AgreeButton";
 export default {
   name: "FileTestViewCard",
-  components: {AgreeButton},
+  components: {},
   props:{
-    name: String
+    listNameFiles: Array
   }
 }
 </script>
 
 <style scoped>
-.file__card{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0273bb;
-  color: white;
-  padding: 10px;
-}
 </style>

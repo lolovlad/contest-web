@@ -5,7 +5,7 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a @click="$router.push(`/admin/user/`)">Пользователи</a></li>
         <li><a @click="$router.push(`/admin/contest/`)">Контесты</a></li>
-        <li><a @click="$router.push(`/admin/team/`)">Команды</a></li>
+        <li><a @click="$router.push(`/admin/task/`)">Банк заданий</a></li>
         <li><a class="dropdown-trigger" data-target="dropdownProfile" ref="dropdownProfile">Профиль</a></li>
       </ul>
     </div>

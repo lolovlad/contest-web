@@ -1,35 +1,68 @@
 <template>
   <div class="form">
-    <TextInput
-        placeholder="Название соревнования"
-        type="text"
-        v-model="task.name_task"
-    />
-    <TextEditor
-        :placeholder="'Задание'"
-        v-model="task.description"
-        ref="description"
-    />
-    <TextEditor
-        :placeholder="'Формат входных данных'"
-        v-model="task.description_input"
-        ref="descriptionInput"
-    />
-    <TextEditor
-        :placeholder="'Формат выходных данных'"
-        v-model="task.description_output"
-        ref="descriptionOutput"
-    />
-    <ComboBox
-        :data="selectTypeTask"
-        v-model="task.type_task"
-    />
-    <ButtonFormMenu
+    <div class="row">
+      <form class="col s12" @submit.prevent>
+        <div class="row">
+          <div class="col s12">
+            <TextInput
+                placeholder="Название соревнования"
+                type="text"
+                v-model="task.name_task"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <ComboBox
+                :data="publishedTypeTask"
+                v-model="task.id_type_task"
+                :disabled="!isAdd"
+            />
+          </div>
+          <div class="col s6">
+            <ComboBox
+                :data="selectComplexity"
+                v-model="task.complexity"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <TextEditor
+                :placeholder="'Задание'"
+                v-model="task.description"
+                ref="description"
+            />
+          </div>
+        </div>
+        <div v-show="keysTypeTask[task.id_type_task] === 'programming'">
+          <div class="row">
+            <div class="col s12">
+              <TextEditor
+                  :placeholder="'Формат входных данных'"
+                  v-model="task.description_input"
+                  ref="descriptionInput"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <TextEditor
+                  :placeholder="'Формат выходных данных'"
+                  v-model="task.description_output"
+                  ref="descriptionOutput"
+              />
+            </div>
+          </div>
+        </div>
+        <ButtonFormMenu
         :is-add="isAdd"
         @add="addTask"
         @clear="clearForm"
         @update="updateTask"
     />
+      </form>
+    </div>
   </div>
 </template>
 
@@ -39,33 +72,33 @@ import ComboBox from "@/components/UI/ComboBox";
 import TextEditor from "@/components/UI/TextEditor";
 import ButtonFormMenu from "@/components/UI/ButtonFormMenu";
 import axios from "axios";
+import M from "materialize-css";
 export default {
   name: "AdminTaskForm",
   components: {ButtonFormMenu, TextEditor, ComboBox, TextInput},
   data(){
     return{
-      idContest: parseInt(this.$route.params.id_contest),
       idTask: this.$route.params.id_task,
       isAdd: (this.$route.params.id_task === undefined),
       taskSchema: {
-        id_contest:  parseInt(this.$route.params.id_contest),
         name_task: "",
         content: "",
-        type_task: 1,
+        complexity: 1,
+        id_type_task: null,
         description: "",
         description_input: "",
         description_output: ""
       },
 
       task: {
-        id_contest:  parseInt(this.$route.params.id_contest),
         name_task: "",
-        type_task: 1,
+        complexity: 1,
+        id_type_task: null,
         description: "",
         description_input: "",
         description_output: ""
       },
-      selectTypeTask: [
+      selectComplexity: [
         {text: "A", value: 1},
         {text: "B", value: 2},
         {text: "C", value: 3},
@@ -73,36 +106,67 @@ export default {
         {text: "I", value: 5},
         {text: "F", value: 6}
       ],
+      selectTypeTask: [],
+      keysTypeTask: {}
+
+    }
+  },
+  computed: {
+    publishedTypeTask() {
+      return this.selectTypeTask.map((data) => {
+        return {
+          value: data.id,
+          text: data.description
+        }
+      })
     }
   },
   methods: {
-    async addTask(){
-      this.task.type_task = parseInt(this.task.type_task)
-      const response = await axios.post(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/`,
-          this.task,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+    async loadType(){
+      const responseType = await axios.get(
+          `tasks/type_task/`
       )
-      response.status
-      this.$router.push(`/admin/contest/${this.idContest}/task`)
+      this.selectTypeTask = responseType.data
+      for(let i of this.selectTypeTask){
+        this.keysTypeTask[i.id] =  i.name
+      }
     },
-    async updateTask(){
-      this.task.type_task = parseInt(this.task.type_task)
-      const response = await axios.put(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/`,
-          this.task,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
+
+    async addTask(){
+      this.task.id_type_task = parseInt(this.task.id_type_task)
+      await axios.post(
+          `tasks/`,
+          this.task
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            if(response.status === 200){
+              M.toast({html: "Задание добавлено"})
+              this.$router.push(`/admin/task`)
             }
           }
       )
-      this.$router.push(`/admin/contest/${this.idContest}/task`)
-      response.status
+    },
+
+    async updateTask(){
+      await axios.put(
+          `tasks/${this.idTask}`,
+          {
+            "name_task": this.task.name_task,
+            "complexity": this.task.complexity,
+            "description": this.task.description,
+            "description_input": this.task.description_input,
+            "description_output": this.task.description_output
+          },
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            if(response.status === 200){
+              M.toast({html: "Задание обновлено"})
+              this.$router.push(`/admin/task`)
+            }
+          }
+      )
     },
     clearForm(){
       this.task = JSON.parse(JSON.stringify(this.taskSchema))
@@ -113,22 +177,18 @@ export default {
 
     async getTask(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/get_task/${this.idTask}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `tasks/get_task/${this.idTask}`
       )
       this.task = response.data
+      this.task.id_type_task = this.task.type_task.id
 
       this.$refs.description.val(this.task.description)
       this.$refs.descriptionInput.val(this.task.description_input)
       this.$refs.descriptionOutput.val(this.task.description_output)
-      console.log(this.task)
     }
   },
   mounted() {
+    this.loadType()
     if(this.isAdd === false){
       this.getTask()
     }
@@ -138,10 +198,6 @@ export default {
 
 <style scoped>
 .form{
-  width: 80%;
-  margin: 80px auto;
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
+  margin: 80px 0;
 }
 </style>

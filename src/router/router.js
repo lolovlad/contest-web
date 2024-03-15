@@ -81,28 +81,28 @@ const routes = [
                     {
                         path: "",
                         component: AdminContestListPage
+                    }
+                ]
+            },
+            {
+                path: "task",
+                component: AdminTaskPage,
+                children: [
+                    {
+                        path: "",
+                        component: AdminTaskViewPage,
                     },
                     {
-                        path: ":id_contest/task",
-                        component: AdminTaskPage,
-                        children: [
-                            {
-                                path: "",
-                                component: AdminTaskViewPage,
-                            },
-                            {
-                                path: "edit/:id_task",
-                                component: AdminTaskForm,
-                            },
-                            {
-                                path: "add",
-                                component: AdminTaskForm
-                            },
-                            {
-                                path: ":id_task/settings",
-                                component: AdminTaskSettingsForm
-                            },
-                        ]
+                        path: "edit/:id_task",
+                        component: AdminTaskForm,
+                    },
+                    {
+                        path: "add",
+                        component: AdminTaskForm
+                    },
+                    {
+                        path: ":id_task/settings",
+                        component: AdminTaskSettingsForm
                     },
                 ]
             },

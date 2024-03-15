@@ -1,37 +1,70 @@
 <template>
-  <ContestList class="list">
-    <ContestCardEdit v-for="(contest, index) in contests"
-                     :key="index"
-                     :contest="contest"
-                     @delete="deleteContest(contest.id)"
-                     @click="openSelectTool(contest)"
+  <div v-if="contestLoad">
+    <div v-if="contests.length > 0">
+      <ContestList>
+        <ContestCardEdit v-for="contest in contests"
+                         :key="contest.uuid"
+                         :contest="contest"
+                         @delete="deleteContest(contest.uuid)"
+                         @edit="openSelectTool(contest)"
 
-    />
-  </ContestList>
-  <FixedButton @click="$router.push(`/admin/contest/add`)"/>
-  <SelectToolTip ref="selectTool" @close="clearSelect">
-    <h3 class="__name">{{selectContest.name_contest}}</h3>
-    <div class="btn__menu">
-      <agree-button @click="deleteContest(selectContest.id)">Удалить</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Редактировать</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/${selectContest.id}/task`)">Задания</agree-button>
-      <agree-button @click="$router.push(`/admin/contest/edit/${selectContest.id}`)">Отчет</agree-button>
-      <agree-button @click="openModelWindow">Добавить пользователей</agree-button>
+        />
+      </ContestList>
+      <CastomPagination :countPage="countPage" class="pag" @updatePage="getListContest"/>
     </div>
-  </SelectToolTip>
-  <CastomModelWindow ref="modelWindow" @close="closeWindow">
-    <div class="main__model__window">
-      <div class="main__list__user">
-        <user-list class="list__user">
-          <UserCardView v-for="(user, index) in listUsers" :key="index" :user="user" @click="addUserContest(index)"/>
-        </user-list>
-        <user-list class="list__user">
-          <UserCardView v-for="(user, index) in contestListUsers" :key="index" :user="user" @click="deleteUser(index)"/>
-        </user-list>
+    <div v-else>
+      <h1>Нет зарегистрированных соревнований</h1>
+    </div>
+    <FixedButton @click="$router.push(`/admin/contest/add`)"/>
+    <SelectToolTip ref="selectTool" @close="clearSelect">
+      <li>
+        <div class="user-view">
+          <img class="circle" src="../../static/solo_olimp.jpg">
+          <span class="name">{{selectContest.name_contest}}</span>
+        </div>
+      </li>
+      <li><div class="divider"></div></li>
+      <li><a @click="editContest">Редактировать</a></li>
+      <li><a @click="openModelWindowTask">Задания</a></li>
+      <li><a @click="openModelWindowUser">Добавить пользователей</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="subheader">Проведение</a></li>
+      <li><a @click="$router.push(`/admin/contest/edit/${selectContest.uuid}`)">Отчет</a></li>
+      <li><a>Ручная проверка</a></li>
+      <li><div class="divider"></div></li>
+      <li><a @click="deleteContest(selectContest.uuid)">Удалить</a></li>
+    </SelectToolTip>
+    <CustomModelWindowCenter ref="taskContest">
+      <RegistrateTask
+          :uuid_contest="selectContest.uuid"
+          ref="regTask"
+          @addTaskInContest="regTask"
+          @deleteTaskInContest="delTask"
+      />
+    </CustomModelWindowCenter>
+    <CustomModelWindowCenter ref="userContest">
+      <RegistrateUser
+          :uuid_contest="selectContest.uuid"
+          ref="regUser"
+          @addUserInContest="regUser"
+          @deleteUserInContest="delUser"
+      />
+    </CustomModelWindowCenter>
+    <!--<CastomModelWindow ref="modelWindow" @close="closeWindow">
+      <div class="main__model__window">
+        <div class="main__list__user">
+          <user-list class="list__user">
+            <UserCardView v-for="(user, index) in listUsers" :key="index" :user="user" @click="addUserContest(index)"/>
+          </user-list>
+          <user-list class="list__user">
+            <UserCardView v-for="(user, index) in contestListUsers" :key="index" :user="user" @click="deleteUser(index)"/>
+          </user-list>
+        </div>
+        <agree-button @click="regUsers">Сохранить</agree-button>
       </div>
-      <agree-button @click="regUsers">Сохранить</agree-button>
-    </div>
-  </CastomModelWindow>
+    </CastomModelWindow>-->
+  </div>
+  <castom-loader  v-else/>
 </template>
 
 <script>
@@ -40,47 +73,62 @@ import ContestList from "@/components/ContestList";
 import ContestCardEdit from "@/components/ContestCardEdit";
 import axios from "axios";
 import SelectToolTip from "@/components/UI/SelectToolTip";
-import AgreeButton from "@/components/UI/AgreeButton";
-import CastomModelWindow from "@/components/UI/CastomModelWindow";
-import UserList from "@/components/UserList";
-import UserCardView from "@/components/UserCardView";
+//import AgreeButton from "@/components/UI/AgreeButton";
+//import CastomModelWindow from "@/components/UI/CastomModelWindow";
+//import UserList from "@/components/UserList";
+//import UserCardView from "@/components/UserCardView";
+import CastomPagination from "@/components/CastomPagination";
+import CastomLoader from "@/components/UI/CastomLoader";
+import M from "materialize-css";
+import CustomModelWindowCenter from "@/components/UI/CustomModelWindowCenter";
+import RegistrateTask from "@/components/RegistrateTask";
+import RegistrateUser from "@/components/RegistrateUser";
 export default {
   name: "AdminContestListPage",
   components: {
-    UserCardView,
-    UserList, CastomModelWindow, AgreeButton, SelectToolTip, ContestCardEdit, ContestList, FixedButton},
+    RegistrateUser,
+    RegistrateTask,
+    CustomModelWindowCenter,
+    CastomLoader, SelectToolTip, ContestCardEdit, ContestList, FixedButton, CastomPagination},
   data(){
     return{
       contests: [],
       selectContest: {},
       listUsers: [],
-      contestListUsers: []
+      contestListUsers: [],
+      countPage: null,
+      contestLoad: false
     }
   },
   methods: {
-    async getListContest(){
+    async getListContest(page=1){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/list_light_contest/`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `contests/list_contest/?number_page=${page}`
       );
+      this.countPage = parseInt(response.headers["x-count-page"])
+      this.contestLoad = true
       this.contests = response.data
     },
     async deleteContest(idContest){
-      const response = await axios.delete(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/${idContest}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
+      await axios.delete(
+          `contests/${idContest}`
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Соревнование удалено"})
+            this.$router.push(`/admin/contest`)
           }
       )
-      response.status
+      this.$refs.selectTool.close()
       await this.getListContest()
     },
+
+    editContest(){
+      this.$router.push(`/admin/contest/edit/${this.selectContest.uuid}`)
+      this.$refs.selectTool.close()
+    },
+
     clearSelect(){
       this.selectContest = {}
     },
@@ -134,6 +182,72 @@ export default {
       this.contestListUsers = []
       this.listUsers.push(...users.user_not_in_contest)
       this.contestListUsers.push(...users.user_in_contest)
+    },
+
+    openModelWindowTask(){
+      this.$refs.taskContest.open()
+      this.$refs.regTask.getListTask()
+    },
+    async regTask(uuidTask){
+      await axios.post(
+          `/contests/registration_task`,
+          {
+            "uuid_task": uuidTask,
+            "uuid_contest": this.selectContest.uuid
+          }
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Задание добавлено"})
+            this.$refs.regTask.getListTask()
+          }
+      )
+    },
+    async delTask(uuidTask){
+      await axios.delete(
+          `/contests/registration_task/${uuidTask}/${this.selectContest.uuid}`,
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Задание удалено"})
+            this.$refs.regTask.getListTask()
+          }
+      )
+    },
+
+    openModelWindowUser(){
+      this.$refs.userContest.open()
+      this.$refs.regUser.getListUser()
+    },
+    async regUser(idUser){
+      await axios.post(
+          `/contests/registration_user`,
+          {
+            "id_user": idUser,
+            "uuid_contest": this.selectContest.uuid
+          }
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Ученик добавлено"})
+            this.$refs.regUser.getListUser()
+          }
+      )
+    },
+    async delUser(idUser){
+      await axios.delete(
+          `/contests/registration_user/${idUser}/${this.selectContest.uuid}`,
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Ученик удален"})
+            this.$refs.regUser.getListUser()
+          }
+      )
     }
   },
   mounted() {
@@ -143,20 +257,6 @@ export default {
 </script>
 
 <style scoped>
-.list{
-  width: 90%;
-  margin: 50px auto;
-  flex-wrap: wrap;
-}
-.btn__menu{
-  display: flex;
-  gap: 5px;
-  margin-left: 30px;
-}
-.__name{
-  color: white;
-  font-size: 30px;
-}
 .main__list__user{
   display: flex;
   margin-bottom: 20px;

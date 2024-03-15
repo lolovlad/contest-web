@@ -16,9 +16,11 @@ import ButtonFormMenu from "@/components/UI/ButtonFormMenu";
 import SelectToolTip from "@/components/UI/SelectToolTip";
 import RangeInput from "@/components/UI/RangeInput";
 import MultiFileInput from "@/components/UI/MultiFileInput";
+import CustomModelWindowCenter from "@/components/UI/CustomModelWindowCenter";
 
 
 export default [
+    CustomModelWindowCenter,
     AgreeButton,
     TextInput,
     TestView,

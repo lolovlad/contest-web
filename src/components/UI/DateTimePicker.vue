@@ -3,9 +3,11 @@
   <VueDatePicker :model-value="convertDate"
                  utc
                  :min-date="minDate"
-                 @update:model-value="handleDate"
-
-  ></VueDatePicker>
+                 @update:model-value="handleDate">
+    <template #input-icon>
+      <img/>
+    </template>
+  </VueDatePicker>
 </template>
 
 <script>
@@ -36,5 +38,7 @@ export default {
 </script>
 
 <style scoped>
-
+.repad{
+  padding: 10px;
+}
 </style>

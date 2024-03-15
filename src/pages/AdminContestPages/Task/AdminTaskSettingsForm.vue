@@ -1,51 +1,72 @@
 <template>
   <div class="form">
-    <div class="block__input">
-      <ComboBox
-          :data="selectTimeWork"
-          v-model="settings.time_work"
-      />
-      <RangeInput
-        v-model="settings.size_raw"
-        :min="32"
-        :max="1024"
-        :step="2"
-        :placeholder="'Количество доступной памяти:'"
-        :metric="'Mb'"
-      />
+    <div class="row">
+      <form class="col s12" @submit.prevent>
+        <div class="row">
+          <div class="col s6">
+            <ComboBox
+                :data="selectTimeWork"
+                v-model="settings.time_work"
+            />
+          </div>
+          <div class="col s6">
+            <RangeInput
+                v-model="settings.size_raw"
+                :min="32"
+                :max="1024"
+                :step="2"
+                :placeholder="'Количество доступной памяти:'"
+                :metric="'Mb'"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s6">
+            <ComboBox
+                :data="selectTypeInput"
+                v-model="settings.type_input"
+            />
+          </div>
+          <div class="col s6">
+            <ComboBox
+                :data="selectTypeOutput"
+                v-model="settings.type_output"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <RangeInput
+                v-model="settings.number_shipments"
+                :min="10"
+                :max="200"
+                :step="5"
+                :placeholder="'Количество доступных попыток:'"
+            />
+          </div>
+        </div>
+        <ButtonFormMenu :is-add="false"
+                        @update="updateSettings"
+                        @clear="clearForm"
+        />
+      </form>
     </div>
-    <div class="block__input">
-      <ComboBox
-          :data="selectTypeInput"
-          v-model="settings.type_input"
-      />
-      <ComboBox
-          :data="selectTypeOutput"
-          v-model="settings.type_output"
-      />
+    <div class="row">
+      <div class="col s12">
+        <agree-button @click="openModalWindow">Открыть файловую систему</agree-button>
+      </div>
     </div>
-    <RangeInput
-        v-model="settings.number_shipments"
-        :min="10"
-        :max="200"
-        :step="5"
-        :placeholder="'Количество доступных попыток:'"
-    />
-    <ButtonFormMenu :is-add="false"
-                    @update="updateSettings"
-                    @clear="clearForm"
-    />
-  </div>
-  <div class="file__edit">
-    <agree-button @click="openModalWindow">Открыть файловую систему</agree-button>
   </div>
   <CastomModelWindow ref="modelWindow">
-    <div class="form__file">
-      <file-input :accept="'.json'" v-model:data="jsonFileData" ref="jsonFile"/>
-      <multi-file-input v-model:listFile="listTestFiles">
-        <FileTestViewCard v-for="(obj, index) in filesTest.listNameFiles" :key="index" :name="obj.name" @deleteFile="deleteFile(index)"/>
-      </multi-file-input>
-
+    <div class="row">
+      <div class="col s6">
+        <FileInput :accept="'.json'" v-model:data="jsonFileData" ref="jsonFile"/>
+      </div>
+      <div class="col s6">
+        <MultiFileInput v-model:listFile="listTestFiles">
+          <FileTestViewCard :listNameFiles="filesTest.listNameFiles" @deleteFile="deleteFile"/>
+        </MultiFileInput>
+      </div>
     </div>
   </CastomModelWindow>
 </template>
@@ -60,6 +81,7 @@ import CastomModelWindow from "@/components/UI/CastomModelWindow";
 import FileInput from "@/components/UI/FileInput";
 import MultiFileInput from "@/components/UI/MultiFileInput";
 import FileTestViewCard from "@/components/FileTestViewCard";
+import M from "materialize-css";
 export default {
   name: "AdminTaskSettingsForm",
   components: {
@@ -68,7 +90,6 @@ export default {
   data(){
     return{
       idTask: this.$route.params.id_task,
-      idContest: this.$route.params.id_contest,
       selectTimeWork: [
         {text: "1 секунда", value: 1},
         {text: "2 секунда", value: 2},
@@ -117,26 +138,29 @@ export default {
     clearForm(){
       this.settings = JSON.parse(JSON.stringify(this.settingsSchema))
     },
+
     async getSettings(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/get_settings/${this.idTask}`,
+          `tasks/get_settings/${this.idTask}`,
       )
       this.settings = response.data
       this.openAddFileWindow(this.settings.files)
     },
+
     async updateSettings(){
-      const response = await axios.put(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/settings/`,
-          this.settings,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
+      await axios.put(
+          `tasks/settings/${this.idTask}`,
+          this.settings
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Настройки обнавлены"})
+            this.$router.push(`/admin/task`)
           }
       )
-      response.status
-      this.$router.push(`/admin/contest/${this.idContest}/task`)
     },
+
     openAddFileWindow(files){
       console.log(files)
       this.filesTest.jsonFileData = ""
@@ -152,52 +176,60 @@ export default {
     },
     async deleteFile(index){
       const fileNameDel = this.filesTest.listNameFiles[index].name
-      const response = await axios.delete(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/delete_file/${this.idTask}/${fileNameDel}/`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
+      await axios.delete(
+          `tasks/delete_file/${this.idTask}/${fileNameDel}/`,
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Файл Удален"})
+            this.getSettings()
           }
       )
-      response.status
-      await this.getSettings()
     }
   },
   watch: {
     async jsonFileData(){
       const formData = new FormData();
       formData.append("file", this.$refs.jsonFile.bytesData)
-      const response = await axios.post(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/upload_json_files/${this.idTask}/`,
+      await axios.post(
+          `tasks/upload_json_files/${this.idTask}/`,
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
-              "Authorization": `Bearer ${this.$store.state.token}`
+              'Content-Type': 'multipart/form-data'
             }
           }
+      ).catch((e)=>{
+        M.toast({html: e.response.message})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Файл сохранен"})
+            this.getSettings()
+          }
       )
-      response.status
-      await this.getSettings()
     },
     async listTestFiles(val){
       for(let file of val){
         const formData = new FormData();
         formData.append("file", file)
-        const response = await axios.post(
-            `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/tasks/upload_file/${this.idTask}/`,
+        await axios.post(
+            `tasks/upload_file/${this.idTask}/`,
             formData,
             {
               headers: {
                 'Content-Type': 'multipart/form-data',
-                "Authorization": `Bearer ${this.$store.state.token}`
               }
             }
+        ).catch((e)=>{
+          M.toast({html: e.response.message})
+        }).then((response)=> {
+              response.status
+              M.toast({html: "Файл сохранен"})
+              this.getSettings()
+            }
         )
-        response.status
       }
-      await this.getSettings()
     }
   },
   mounted() {
@@ -208,28 +240,7 @@ export default {
 
 <style scoped>
 .form{
-  width: 60%;
-  margin: 80px auto;
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
+  margin: 80px 0;
 }
-.block__input{
-  display: flex;
-  width: 100%;
-  gap: 30px;
-  align-content: space-between;
-  justify-content: space-between;
-}
-.file__edit{
-  width: 60%;
-  margin: 80px auto;
-}
-.form__file{
-  width: 60%;
-  margin: 80px auto;
-  display: flex;
-  gap: 30px;
-  flex-direction: column;
-}
+
 </style>
