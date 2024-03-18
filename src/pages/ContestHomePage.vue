@@ -29,17 +29,16 @@
       Возможно, программа на C++ не завершается оператором «return 0» или по иной причине
       вернула ненулевой код возврата.</p>
   </div>
-  <h1 v-else>
-    загрузка
-  </h1>
+  <castom-loader v-else/>
 </template>
 
 <script>
 import axios from "axios";
 import DescriptionTask from "@/components/UI/DescriptionTask";
+import CastomLoader from "@/components/UI/CastomLoader";
 
 export default {
-  components: {DescriptionTask},
+  components: {CastomLoader, DescriptionTask},
   data(){
     return{
       idContest: this.$route.params.id_contest,
@@ -50,12 +49,7 @@ export default {
   methods: {
     async getContest(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/${this.idContest}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `contests/${this.idContest}`,
       );
       this.contest = response.data
       this.isLoad = true

@@ -1,9 +1,19 @@
 <template>
-  <div class="form__send">
-    <combo-box :data="compilationComboBox" v-model="selectLanguage" v-if="isLoadCompilations"/>
-    <file-input v-model:data="fileData" ref="fileInput"/>
-    <AgreeButton @click="sendAnswer">Отправить</AgreeButton>
-  </div>
+    <form @submit.prevent>
+      <div class="row">
+        <div class="col s6">
+          <ComboBox :data="compilationComboBox" v-model="selectLanguage" v-if="isLoadCompilations"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <FileInput v-model:data="fileData" ref="fileInput"/>
+        </div>
+      </div>
+
+      <AgreeButton @click="sendAnswer">Отправить</AgreeButton>
+
+    </form>
 </template>
 
 <script>
@@ -33,19 +43,13 @@ export default {
   methods:{
     async getCompilations(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/compilations/list_compilations`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
-
+          `compilations/list_compilations`
       );
       this.compilations = response.data
       this.isLoadCompilations = true
     },
     sendAnswer(){
-      this.$emit('sendAnswer', this.selectLanguage, this.fileData)
+      this.$emit('sendAnswer', this.selectLanguage, this.$refs.fileInput.bytesData)
     },
     clearForm(){
       this.$refs.fileInput.clearSelected()
@@ -60,11 +64,4 @@ export default {
 </script>
 
 <style scoped>
-.form__send{
-  height: 100%;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 </style>

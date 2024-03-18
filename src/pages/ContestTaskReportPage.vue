@@ -1,7 +1,7 @@
 <template>
-  <agree-button @click="$router.go(-1)">Назад</agree-button>
-  <div v-if="isLoadReport">
-    <report-card v-for="(repChunk, idObj) in report.list_report" :report-chunk="repChunk" :key="idObj"/>
+  <AgreeButton @click="$router.go(-1)">Назад</AgreeButton>
+  <div v-if="isLoadReport" class="container">
+    <ReportCard v-for="(repChunk, idObj) in report.list_report" :report-chunk="repChunk" :key="idObj"/>
   </div>
 </template>
 
@@ -23,13 +23,9 @@ export default {
   methods: {
     async getReport(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/user_contest_view/get_report/${this.idAnswer}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `user_contest_view/get_report/${this.idAnswer}`,
       )
+      console.log(response.data)
       this.report = response.data.report
       this.isLoadReport = true
     }

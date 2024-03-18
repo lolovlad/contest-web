@@ -1,6 +1,6 @@
 <template>
   <navbar-user></navbar-user>
-  <div class="main">
+  <div class="container">
     <h1>Меню пользователя</h1>
     <ListContest :contests="contests">
 
@@ -21,12 +21,7 @@ export default {
   methods: {
     async getContestView(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/contests_by_user_id/`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `contests/contests_by_user_id`,
       );
       this.contests = response.data
     }
@@ -41,16 +36,6 @@ export default {
 
 <style scoped>
 .main{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 40px auto;
-  width: 80%;
-}
-.main > h1{
-  text-align: center;
-  font-size: 50px;
-  font-weight: 500;
-  margin-bottom: 30px;
+  margin: 40px 0;
 }
 </style>

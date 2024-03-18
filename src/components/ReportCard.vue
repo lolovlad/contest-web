@@ -1,10 +1,12 @@
 <template>
-  <div class="block__main">
-    <h3>Итог тестирования {{reportChunk.state_test}}</h3>
-    <h3>Количество баллов {{reportChunk.point_sum}}</h3>
-    <h3>Последний номер теста {{reportChunk.number_test}}</h3>
-    <h3>Количетсов тестов {{countTests}}</h3>
-    <castom-table class="block__table" v-if="countTests > 0" :headers="headerReportTable" :contents="contentReportTable"/>
+  <div class="row">
+    <div class="col s12">
+      <h5>Итог тестирования {{reportChunk.state_test}}</h5>
+      <h5>Количество баллов {{reportChunk.point_sum}}</h5>
+      <h5>Последний номер теста {{reportChunk.number_test}}</h5>
+      <h5>Количетсов тестов {{countTests}}</h5>
+      <CastomTable class="block__table" v-if="countTests > 0" :headers="headerReportTable" :contents="contentReportTable"/>
+    </div>
   </div>
 </template>
 
@@ -26,8 +28,8 @@ export default {
       const content = []
       for(let i = 0; i < lenArr; i++){
         content.push({
-          time: this.reportChunk.time[i],
-          memory: this.reportChunk.memory[i],
+          time: `${this.reportChunk.time[i]} ms`,
+          memory: `${this.reportChunk.memory[i]} Mb`,
           listTestReport: this.reportChunk.list_test_report[i]
         })
       }
@@ -44,7 +46,6 @@ export default {
 <style scoped>
 .block__main{
   padding: 20px;
-  border: 1px solid black;
   margin: 20px;
   width: auto;
 }

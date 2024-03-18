@@ -1,15 +1,14 @@
 <template>
-  <div class="test__main">
-    <h2>Номер теста {{numberTest}}</h2>
-    <div class="test__body">
-      <div class="test__chunk">
-        <h4>Ввод</h4>
-        <p>{{examplePrintVariable}}</p>
-      </div>
-      <div class="test__chunk">
-        <h4>Ввод</h4>
-        <p>{{examplePrintAnswer}}</p>
-      </div>
+  <div class="divider"></div>
+  <h4>Номер теста {{numberTest}}</h4>
+  <div class="test__body">
+    <div class="test__chunk">
+      <h5 class="text-bold">Ввод</h5>
+      <p>{{examplePrintVariable}}</p>
+    </div>
+    <div class="test__chunk">
+      <h5 class="text-bold">Ввод</h5>
+      <p>{{examplePrintAnswer}}</p>
     </div>
   </div>
 </template>
@@ -43,6 +42,11 @@ export default {
 </script>
 
 <style scoped>
+
+.top__margin{
+  margin-top: 40px;
+}
+
 .test__main{
   font-size: 20px;
   margin-bottom: 30px;
@@ -63,5 +67,9 @@ export default {
 }
 .test__chunk > p{
   white-space: pre;
+}
+
+.text-bold{
+  font-weight: 500;
 }
 </style>

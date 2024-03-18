@@ -1,5 +1,5 @@
 <template>
-  <div class="list__contest">
+  <div class="row">
     <ContestItemCard
         v-for="contest in contests"
         :contest=contest
@@ -23,11 +23,4 @@ export default {
 </script>
 
 <style scoped>
-.list__contest{
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 50px
-}
 </style>

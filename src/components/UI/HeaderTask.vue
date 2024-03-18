@@ -1,7 +1,11 @@
 <template>
-  <h5 class="task__header">
-    <slot></slot>
-  </h5>
+  <div class="row">
+    <div class="col s12">
+      <h3>
+        <slot></slot>
+      </h3>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -11,9 +15,4 @@ export default {
 </script>
 
 <style scoped>
-.task__header{
-  font-size: 40px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
 </style>

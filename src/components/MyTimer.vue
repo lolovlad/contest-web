@@ -1,7 +1,5 @@
 <template>
-  <div class="main__body">
-    <h3>{{displayDays}}:{{displayHours}}:{{displayMinutes}}:{{displaySeconds}}</h3>
-  </div>
+  <h3>{{displayDays}}:{{displayHours}}:{{displayMinutes}}:{{displaySeconds}}</h3>
 </template>
 
 <script>

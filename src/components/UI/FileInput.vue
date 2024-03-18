@@ -1,6 +1,6 @@
 <template>
  <div class="file__div">
-   <label>
+   <label class="z-depth-3">
      <input
          type="file"
          @change="fileSelected"
@@ -60,8 +60,8 @@ input[type=file]{
 }
 label{
   width: 100%;
-  height: 50px;
-  background: #b50034;
+  height: 40px;
+  background: #B71C1C;
   color: white;
   font-size: 20px;
   text-align: center;

@@ -23,12 +23,7 @@ export default {
   methods: {
     async getResult(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/contests/report_total/${this.idContest}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `/contests/report_total/${this.idContest}`,
       );
       this.result = response.data
       this.isLoadData = true

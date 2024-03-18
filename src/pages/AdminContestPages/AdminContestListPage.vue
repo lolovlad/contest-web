@@ -29,8 +29,8 @@
       <li><a @click="openModelWindowUser">Добавить пользователей</a></li>
       <li><div class="divider"></div></li>
       <li><a class="subheader">Проведение</a></li>
-      <li><a @click="$router.push(`/admin/contest/edit/${selectContest.uuid}`)">Отчет</a></li>
-      <li><a>Ручная проверка</a></li>
+      <li><a @click="tableContestResult">Отчет</a></li>
+      <li><a @click="controllerContest">Ручная проверка</a></li>
       <li><div class="divider"></div></li>
       <li><a @click="deleteContest(selectContest.uuid)">Удалить</a></li>
     </SelectToolTip>
@@ -50,19 +50,6 @@
           @deleteUserInContest="delUser"
       />
     </CustomModelWindowCenter>
-    <!--<CastomModelWindow ref="modelWindow" @close="closeWindow">
-      <div class="main__model__window">
-        <div class="main__list__user">
-          <user-list class="list__user">
-            <UserCardView v-for="(user, index) in listUsers" :key="index" :user="user" @click="addUserContest(index)"/>
-          </user-list>
-          <user-list class="list__user">
-            <UserCardView v-for="(user, index) in contestListUsers" :key="index" :user="user" @click="deleteUser(index)"/>
-          </user-list>
-        </div>
-        <agree-button @click="regUsers">Сохранить</agree-button>
-      </div>
-    </CastomModelWindow>-->
   </div>
   <castom-loader  v-else/>
 </template>
@@ -73,10 +60,6 @@ import ContestList from "@/components/ContestList";
 import ContestCardEdit from "@/components/ContestCardEdit";
 import axios from "axios";
 import SelectToolTip from "@/components/UI/SelectToolTip";
-//import AgreeButton from "@/components/UI/AgreeButton";
-//import CastomModelWindow from "@/components/UI/CastomModelWindow";
-//import UserList from "@/components/UserList";
-//import UserCardView from "@/components/UserCardView";
 import CastomPagination from "@/components/CastomPagination";
 import CastomLoader from "@/components/UI/CastomLoader";
 import M from "materialize-css";
@@ -129,6 +112,16 @@ export default {
       this.$refs.selectTool.close()
     },
 
+    tableContestResult(){
+      this.$router.push(`/admin/contest/result/${this.selectContest.uuid}`)
+      this.$refs.selectTool.close()
+    },
+
+    controllerContest(){
+      this.$router.push(`/admin/contest/controller/${this.selectContest.uuid}`)
+      this.$refs.selectTool.close()
+    },
+
     clearSelect(){
       this.selectContest = {}
     },
@@ -144,7 +137,7 @@ export default {
     },
     async getUser(){
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/users/in_contest/${this.selectContest.id}`,
+          `users/in_contest/${this.selectContest.id}`,
       )
       return response.data
     },

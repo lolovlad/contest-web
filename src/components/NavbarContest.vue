@@ -1,36 +1,29 @@
 <template>
-  <div class="navbar__left">
-    <img src="../static/logo.png">
-    <h1>{{contest.name_contest}}</h1>
-    <div class="navbar__info">
-      <h3>Начало контеста: {{dateView(contest.datetime_start)}}</h3>
-      <h3>Окончание контеста: {{dateView(contest.datetime_end)}}</h3>
-      <h3>Длительность: {{distante}}</h3>
-    </div>
-
-    <div class="navbar__link">
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/`)">Главная страница</AgreeButton>
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/result`)">Таблица участников</AgreeButton>
-      <AgreeButton @click="$router.push(`/contest/${contest.id}/tasks`)">Задания</AgreeButton>
-    </div>
-
-    <div class="navbar__button">
-      <agree-button @click="$router.push(`/menu`)">Выйти</agree-button>
-      <agree-button @click="$emit('timerClose')">Закончить</agree-button>
-    </div>
-
-    <div class="navbar__timer">
-      <my-timer :data-json="contest.datetime_end" @close="closeContest"/>
-    </div>
-  </div>
+  <ul id="slide-out" class="sidenav red darken-4">
+    <li><div class="user-view">
+      <img class="circle__custom" src="../static/logo.png">
+      <a @click="$router.push(`/contest/${contest.uuid}/`)"><p class="white-text name__custom">{{contest.name_contest}}</p></a>
+      <span class="white-text email">Старт контеста: {{dateView(contest.datetime_start)}}</span>
+      <span class="white-text email">Конец контеста: {{dateView(contest.datetime_end)}}</span>
+      <span class="white-text email">Длительность: {{distante}}</span>
+    </div></li>
+    <li><div class="divider"></div></li>
+    <li><a @click="$router.push(`/contest/${contest.uuid}/result`)" class="white-text">Таблица участников</a></li>
+    <li><a @click="$router.push(`/contest/${contest.uuid}/tasks`)" class="white-text">Задания</a></li>
+    <li><div class="divider"></div></li>
+    <li><a @click="$emit('timerClose')" class="white-text">Закончить</a></li>
+    <li><a @click="$router.push(`/menu`)" class="white-text">Выйти</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader white-text">Таймер</a></li>
+    <li><a class="white-text"><MyTimer :data-json="contest.datetime_end" @close="closeContest"/></a></li>
+  </ul>
 </template>
 
 <script>
 import MyTimer from "@/components/MyTimer";
-import AgreeButton from "@/components/UI/AgreeButton";
 export default {
   components:{
-    AgreeButton,
+    //AgreeButton,
     MyTimer
   },
   data(){
@@ -45,7 +38,11 @@ export default {
   },
   methods: {
     dateView(date){
-      return new Date(date).toLocaleDateString('en-GB');
+      const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric" };
+      return new Date(date).toLocaleDateString('ru-RU', options);
     },
     zeroAdd: (number) => {
       return number < 10 ? "0" + number: number
@@ -62,7 +59,7 @@ export default {
       const minutes = Math.floor((dist % this.hours) / this.minutes)
       const seconds = Math.floor((dist % this.minutes) / this.seconds)
 
-      return `${this.zeroAdd(days)}:${this.zeroAdd(hours)}:${this.zeroAdd(minutes)}:${this.zeroAdd(seconds)}`
+      return `${this.zeroAdd(days)} д. ${this.zeroAdd(hours)} ч. ${this.zeroAdd(minutes)} м. ${this.zeroAdd(seconds)} с.`
     },
     seconds: () => 1000,
     minutes() {
@@ -75,56 +72,34 @@ export default {
       return this.hours * 24
     }
   },
-  mounted() {
-  },
   name: "NavbarContest"
 }
 </script>
 
 <style scoped>
-.navbar__left{
-  color: white;
-  height: 100vh;
-  width: 100%;
-  background: #0273bb;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 1);
-}
 .navbar__left h1{
   font-size: 40px;
   text-align: center;
-}
-.navbar__info{
-  text-align: center;
-  font-size: 17px;
-  margin: 30px 0;
 }
 .navbar__left img{
   display: block;
   margin: 20px auto;
   width: 65%;
 }
-.navbar__timer{
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
-  background: black;
-  color: white;
-}
-.navbar__link{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
 
-.navbar__button{
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  gap: 10px
+
+
+.sidenav {
+  transform: translateX(0%) !important;
+}
+.name__custom{
+  font-size: 30px;
+  margin-top: 16px;
+  font-weight: 500;
+  line-height: 70px;
+}
+.circle__custom{
+  height: 130px;
+  width: 130px;
 }
 </style>

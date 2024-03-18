@@ -11,16 +11,13 @@
         <tr v-for="answer in answers" class="main" :key="answer.id">
           <td>{{convertDate(answer.date_send)}}</td>
           <td>{{answer.id}}</td>
-          <td>{{answer.name_user}}</td>
-          <td>{{answer.name_task}}</td>
-          <td v-if="isProgramming">{{answer.name_compilation}}</td>
           <td>{{answer.total}}</td>
-          <td v-if="isProgramming">{{answer.time}}</td>
-          <td v-if="isProgramming">{{answer.memory_size}} Mb</td>
-          <td v-if="isProgramming">{{answer.number_test}}</td>
+          <td>{{answer.time}}</td>
+          <td>{{answer.memory_size}} Mb</td>
+          <td>{{answer.number_test}}</td>
           <td>{{answer.points}}</td>
-          <td v-if="isProgramming">
-            <AgreeButton @click="$router.push(`/contest/${idContest}/report/${idTask}/${answer.id}`)">отчет</AgreeButton>
+          <td>
+            <AgreeButton @click="$router.push(`/admin/contest/answer/${idContest}/${idTask}/${answer.id}`)">Редактировать</AgreeButton>
           </td>
         </tr>
         </tbody>
@@ -32,6 +29,7 @@
 <script>
 import AgreeButton from "@/components/UI/AgreeButton";
 export default {
+  name: "TableAnswerAdmin",
   components: {AgreeButton},
   props: {
     answers:{
@@ -44,43 +42,20 @@ export default {
     idContest: {
       type: String,
       default: ""
-    },
-    typeTask: {
-      type: String
-    }
-  },
-  data(){
-    return{
-
     }
   },
   computed:{
     headersTableAnswer(){
-      let header = []
-      if(this.typeTask === 'programming'){
-        header = [
+      const header = [
           "Время отправки",
           "ID",
-          "Пользователь",
-          "№ Задачи",
-          "Компилятор",
-          "Итог",
+          "Вердикт",
           "Время",
           "Память",
-          "№ Тест",
+          "Номер теста",
           "Баллы",
-          "Отчет",
-        ]
-      }else{
-        header = [
-          "Время отправки",
-          "ID",
-          "Пользователь",
-          "№ Задачи",
-          "Итог",
-          "Баллы",
-        ]
-      }
+          ""
+      ]
       return header
     },
     options(){
@@ -94,18 +69,15 @@ export default {
         second: 'numeric'
       }
     },
-    isProgramming(){
-      return this.typeTask === 'programming'
-    }
   },
   methods: {
     convertDate(date){
       return new Date(date).toLocaleString("ru", this.options)
     }
   },
-  name: "TableAnswer"
 }
 </script>
 
 <style scoped>
+
 </style>

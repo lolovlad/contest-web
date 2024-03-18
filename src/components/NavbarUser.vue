@@ -1,7 +1,19 @@
 <template>
-  <nav class="navbar">
-    <div class="logo">
-      <img src="../static/logo.png">
+  <nav class="blue darken-1">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#Main" class="logo">
+          <img src="../static/logo.png" class="circle responsive-img">
+        </a>
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a class="waves-effect" href="#home">Соревнования</a>
+          </li>
+          <li>
+            <a class="waves-effect" href="#info">Профиль</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
@@ -13,33 +25,14 @@ export default {
 </script>
 
 <style>
-.navbar{
-  height: 80px;
-  width: 100%;
-  background: #ffffff;
-  color: #b50034;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.logo{
-  height: 90%;
-  margin: 10px 10px;
-}
-
-.navbar::after{
-  content: '';
-  width: 95%;
-  height: 1px;
-  background: #999393;
-  position: absolute;
-  bottom: -7px;
-}
-
-.logo > img{
+.logo {
+  display: inline-block;
   height: 100%;
+}
+
+.logo>img {
+  vertical-align: middle;
+  position: relative;
+  top:1px;
 }
 </style>

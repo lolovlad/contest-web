@@ -1,37 +1,73 @@
 <template>
-  <div class="task" v-if="isLoadMain">
-    <header-task>{{typeTaskFilter(targetTask.type_task)}} {{targetTask.name_task}}</header-task>
-    <castom-table :headers="headersTableSettings" :contents="contentsTableSettings" class="task__table"/>
-    <description-task v-html="targetTask.description" class="desc"/>
-    <header-task>Формат ввода</header-task>
-    <description-task v-html="targetTask.description_input"  class="desc"/>
-    <header-task>Формат вывода</header-task>
-    <description-task v-html="targetTask.description_output"  class="desc"/>
-    <test-view
-        class="test__view"
-        v-for="(item, index) in targetTask.view_test"
-        :key="index"
-        :numberTest="index + 1"
-        :fillingTypeVariable="item.filling_type_variable"
-        :answer="item.answer"
-    />
-    <castom-table v-if="isLoadMain" class="task__table" :headers="headersTableTests" :contents="contentsTableTests"/>
-    <div class="form__send_answer">
-      <form-send-answer @sendAnswer="sendAnswer" v-if="!$store.state.isCloseContest" ref="sendForm"/>
-      <h3>Осталось попыток {{numberShipments}}</h3>
+  <div class="container" v-if="isLoadMain">
+    <HeaderTask>{{typeTaskFilter(targetTask.complexity)}} {{targetTask.name_task}}</HeaderTask>
+
+    <CastomTable :headers="headersTableSettings" :contents="contentsTableSettings" v-if="targetTask.type_task === 'programming'"/>
+    <div class="row">
+      <DescriptionTask v-html="targetTask.description"/>
     </div>
-    <table-answer :answers="listAnswer" :idTask="targetTask.id" :idContest="idContest" class="task__table"/>
+    <div v-if="targetTask.type_task.name === 'programming'">
+      <HeaderTask>Формат ввода</HeaderTask>
+      <div class="row">
+        <description-task v-html="targetTask.description_input"/>
+      </div>
+      <HeaderTask>Формат вывода</HeaderTask>
+      <div class="row">
+        <DescriptionTask v-html="targetTask.description_output"/>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 110px;" v-if="targetTask.type_task.name === 'programming'">
+      <div class="col s12">
+        <TestView
+            v-for="(item, index) in targetTask.view_test"
+            :key="index"
+            :numberTest="index + 1"
+            :fillingTypeVariable="item.filling_type_variable"
+            :answer="item.answer"
+        />
+      </div>
+    </div>
+    <CastomTable v-if="isLoadMain && targetTask.type_task.name === 'programming'"
+                 :headers="headersTableTests"
+                 :contents="contentsTableTests"/>
+
+    <div v-if="$store.getters['contestUser/isCloseContest'] === false">
+      <div class="row" style="margin-top: 110px;" v-if="targetTask.type_task.name === 'programming'">
+        <div class="col s12">
+          <FormSendAnswer
+              @sendAnswer="sendAnswer"
+              v-if="!$store.state.isCloseContest" ref="sendForm"/>
+          <h5>Осталось попыток {{numberShipments}}</h5>
+        </div>
+      </div>
+      <div class="row" v-else>
+        <div class="col s12">
+          <FormSendEditAnswer @sendAnswer="sendAnswerEdit" v-if="!$store.state.isCloseContest" ref="sendFormEdit"/>
+          <h5>Осталось попыток {{numberShipments}}</h5>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <div class="row">
+        <div class="col s6">
+          <h4>Контест закончен</h4>
+        </div>
+      </div>
+    </div>
+
+    <TableAnswer :answers="listAnswer" :idTask="targetTask.uuid" :idContest="idContest" :typeTask="targetTask.type_task.name"/>
   </div>
-  <div class="task__list" v-if="isLoadMenu">
-    <button-task
+  <div v-if="isLoadMenu" class="task__list">
+    <ButtonTask
         v-for="task in listTask"
-        :key="task.id"
+        :key="task.uuid"
         :score="task.last_answer"
-        @click="getTask(task.id)"
+        @click="getTask(task.uuid)"
     >
-      {{task.type_task}}  {{task.name_task}}
-    </button-task>
+      {{task.complexity}}  {{task.name_task}}
+    </ButtonTask>
   </div>
+  <UserTaskMenu/>
 </template>
 
 <script>
@@ -43,9 +79,14 @@ import DescriptionTask from "@/components/UI/DescriptionTask";
 import TestView from "@/components/UI/TestView";
 import FormSendAnswer from "@/components/FormSendAnswer";
 import TableAnswer from "@/components/TableAnswer";
+import UserTaskMenu from "@/components/UserTaskMenu";
+import M from "materialize-css";
+import FormSendEditAnswer from "@/components/FormSendEditAnswer";
 
 export default {
-  components: {TableAnswer, FormSendAnswer, TestView, DescriptionTask, HeaderTask, CastomTable, ButtonTask},
+  components: {
+    FormSendEditAnswer,
+    UserTaskMenu, TableAnswer, FormSendAnswer, TestView, DescriptionTask, HeaderTask, CastomTable, ButtonTask},
   data(){
     return{
       idContest: this.$route.params.id_contest,
@@ -60,7 +101,9 @@ export default {
 
       websocketServer: null,
 
-      numberShipments: 0
+      numberShipments: 0,
+
+      polling: null
 
     }
   },
@@ -87,7 +130,6 @@ export default {
         }
       })
     },
-
   },
   methods: {
     typeTaskFilter(val) {
@@ -119,108 +161,113 @@ export default {
 
     async getListTask() {
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/user_contest_view/get_list_task/${this.idContest}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `user_contest_view/get_list_task/${this.idContest}`
       );
       this.listTask = response.data
-
       if(this.isLoadMenu === false){
-        this.getTask(this.listTask[0].id)
+        this.getTask(this.listTask[0].uuid)
       }
 
       this.isLoadMenu = true
 
     },
-    async getTask(idTask) {
+
+    async onliLoadListTask(){
+      const response = await axios.get(
+          `user_contest_view/get_list_task/${this.idContest}`
+      );
+      this.listTask = response.data
+    },
+
+    async getTask(uuid) {
       this.isLoadMain = false
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/user_contest_view/get_task/${idTask}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `user_contest_view/get_task/${uuid}`
       );
       this.targetTask = response.data
       this.numberShipments = this.targetTask.number_shipments
       this.isLoadMain = true
+
       await this.getListAnswer()
+
+
+      this.polling = setInterval(() => {
+        this.onliLoadListTask()
+        this.getListAnswer()
+      }, 10000)
     },
+
+
     async getListAnswer(){
-      console.log(this.targetTask)
       const response = await axios.get(
-          `http://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/user_contest_view/get_list_answers/${this.idContest}/${this.targetTask.id}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.$store.state.token}`
-            }
-          }
+          `user_contest_view/get_list_answers/${this.idContest}/${this.targetTask.uuid}`,
       );
       this.listAnswer = response.data
       this.numberShipments = this.targetTask.number_shipments - this.listAnswer.length
 
     },
 
-    initWebSocket() {
-      this.websocketServer = new WebSocket(`ws://${process.env.VUE_APP_HOST_SERVER}:${process.env.VUE_APP_PORT_SERVER}/user_contest_view/view_contest?token=${this.$store.state.token}`)
-      this.websocketServer.addEventListener("message", (event)=> {
-          const obj = JSON.parse(JSON.parse(event.data));
-          if(obj.message === "post_answer") {
-            this.getListAnswer()
-          }else if(obj.message === "get_list_task"){
-            this.getListTask()
+
+    async sendAnswer(selectLeng, data) {
+
+      const formData = new FormData();
+      formData.append("file", data)
+      formData.append("id_compilation", parseInt(selectLeng))
+      await axios.post(
+          `user_contest_view/send_answer/${this.idContest}/${this.targetTask.uuid}/`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           }
-      })
-
-      this.websocketServer.onclose = function (event) {
-        if (event.wasClean) {
-          alert(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
-        } else {
-          alert('[close] Соединение прервано');
-        }
-      };
-
-      this.websocketServer.onerror = function (error) {
-        alert(error);
-      };
-
+      ).catch((e)=>{
+        e.code
+        M.toast({html: "Ошибка в отправке ответа"})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Ответ отправлен"})
+            this.getListAnswer()
+            this.$refs.sendForm.clearForm()
+          }
+      )
     },
 
-    sendAnswer(selectLeng, data) {
-      const message = {
-        message: "post_answer",
-        body_message: {
-          id_task: this.targetTask.id,
-          token: this.$store.state.token,
-          id_contest: this.idContest,
-          id_compiler: selectLeng,
-          program_file: data
-        }
-      }
-
-      this.websocketServer.send(JSON.stringify(message))
-      this.$refs.sendForm.clearForm()
+    async sendAnswerEdit(ansText){
+      const formData = new FormData();
+      formData.append("text", ansText)
+      await axios.post(
+          `user_contest_view/send_answer_text/${this.idContest}/${this.targetTask.uuid}/`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+      ).catch((e)=>{
+        e.code
+        M.toast({html: "Ошибка в отправке ответа"})
+      }).then((response)=> {
+            response.status
+            M.toast({html: "Ответ отправлен"})
+            this.getListAnswer()
+            this.$refs.sendFormEdit.clearForm()
+          }
+      )
     },
-
 
   },
   mounted() {
     this.getListTask()
-    this.initWebSocket()
+  },
+  beforeUnmount () {
+    clearInterval(this.polling)
   },
   name: "ContestTaskPage"
 }
 </script>
 
 <style scoped>
-.task{
-  margin-left: 50px;
-  padding: 40px 0;
-}
 .task__list{
   position: fixed;
   top: 30px;
@@ -228,24 +275,5 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 7px;
-}
-.task__table{
-  margin-bottom: 50px;
-  text-align: center;
-}
-.test__view{
-  margin: 50px 0;
-}
-
-.form__send_answer{
-  width: 50%;
-  margin: 40px 0;
-
-}
-.form__send_answer > h3{
-  margin: 8px 0;
-}
-.desc{
-  width: 70%;
 }
 </style>

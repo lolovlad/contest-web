@@ -17,6 +17,8 @@ import AdminTaskPage from "@/pages/AdminContestPages/Task/AdminTaskPage";
 import AdminTaskViewPage from "@/pages/AdminContestPages/Task/AdminTaskViewPage";
 import AdminTaskForm from "@/pages/AdminContestPages/Task/AdminTaskForm";
 import AdminTaskSettingsForm from "@/pages/AdminContestPages/Task/AdminTaskSettingsForm";
+import AdminContestControllerPage from "@/pages/AdminContestPages/AdminContestControllerPage";
+import AdminAnswerFormEditPage from "@/pages/AdminContestPages/Answer/AdminAnswerFormEditPage";
 
 const routes = [
     {
@@ -81,6 +83,18 @@ const routes = [
                     {
                         path: "",
                         component: AdminContestListPage
+                    },
+                    {
+                        path: "controller/:id_contest",
+                        component: AdminContestControllerPage
+                    },
+                    {
+                        path: "answer/:id_contest/:id_task/:id_answer",
+                        component: AdminAnswerFormEditPage
+                    },
+                    {
+                        path: "result/:id_contest",
+                        component: ContestResultPage
                     }
                 ]
             },

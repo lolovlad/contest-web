@@ -1,9 +1,8 @@
 <template>
-  <div class="description">
-    <slot>
-
-    </slot>
-  </div>
+    <div class="col s12">
+      <slot>
+      </slot>
+    </div>
 </template>
 
 <script>
@@ -13,7 +12,4 @@ export default {
 </script>
 
 <style scoped>
-.description{
-  margin-bottom: 30px;
-}
 </style>
