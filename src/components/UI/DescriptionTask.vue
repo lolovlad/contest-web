@@ -1,5 +1,5 @@
 <template>
-    <div class="col s12">
+    <div class="col s10">
       <slot>
       </slot>
     </div>

@@ -9,7 +9,7 @@
     <div v-if="targetTask.type_task.name === 'programming'">
       <HeaderTask>Формат ввода</HeaderTask>
       <div class="row">
-        <description-task v-html="targetTask.description_input"/>
+        <DescriptionTask v-html="targetTask.description_input"/>
       </div>
       <HeaderTask>Формат вывода</HeaderTask>
       <div class="row">
@@ -64,7 +64,7 @@
         :score="task.last_answer"
         @click="getTask(task.uuid)"
     >
-      {{task.complexity}}  {{task.name_task}}
+      {{typeTaskFilter(task.complexity)}}  {{rename_task(task.name_task)}}
     </ButtonTask>
   </div>
   <UserTaskMenu/>
@@ -132,6 +132,15 @@ export default {
     },
   },
   methods: {
+
+    rename_task(val){
+      if(val.length <= 13){
+        return val
+      }else{
+        return `${val.slice(0, 10)}...`
+      }
+    },
+
     typeTaskFilter(val) {
       const info = {
         1: "A",
