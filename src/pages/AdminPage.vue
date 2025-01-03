@@ -1,10 +1,10 @@
 <template>
   <admin-header/>
-  <div class="container">
+  <v-main>
     <router-view>
 
     </router-view>
-  </div>
+  </v-main>
 </template>
 
 <script>

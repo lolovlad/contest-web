@@ -2,7 +2,7 @@
   <div class="col s4">
     <div class="card">
       <div class="card-image">
-        <img src="../static/solo_olimp.jpg">
+        <img src="../assets/solo_olimp.jpg">
       </div>
       <div class="card-content">
         <span class="card-title">{{contest.contest.name_contest}}</span>

@@ -1,29 +1,38 @@
 <template>
-  <ul id="slide-out" class="sidenav red darken-4">
-    <li><div class="user-view">
-      <img class="circle__custom" src="../static/logo.png">
-      <a @click="$router.push(`/contest/${contest.uuid}/`)"><p class="white-text name__custom">{{contest.name_contest}}</p></a>
-      <span class="white-text email">Старт контеста: {{dateView(contest.datetime_start)}}</span>
-      <span class="white-text email">Конец контеста: {{dateView(contest.datetime_end)}}</span>
-      <span class="white-text email">Длительность: {{distante}}</span>
-    </div></li>
-    <li><div class="divider"></div></li>
-    <li><a @click="$router.push(`/contest/${contest.uuid}/result`)" class="white-text">Таблица участников</a></li>
-    <li><a @click="$router.push(`/contest/${contest.uuid}/tasks`)" class="white-text">Задания</a></li>
-    <li><div class="divider"></div></li>
-    <li><a @click="$emit('timerClose')" class="white-text">Закончить</a></li>
-    <li><a @click="$router.push(`/menu`)" class="white-text">Выйти</a></li>
-    <li><div class="divider"></div></li>
-    <li><a class="subheader white-text">Таймер</a></li>
-    <li><a class="white-text"><MyTimer :data-json="contest.datetime_end" @close="closeContest"/></a></li>
-  </ul>
+  <v-navigation-drawer :width="300" class="bg-red-darken-4 pa-2">
+    <template v-slot:prepend>
+      <v-row align="center" justify="center">
+        <v-col class="d-flex child-flex" cols="12" md="9">
+          <v-img :src="require('@/assets/logo.png')"
+                 cover
+                 aspect-ratio="1"/>
+        </v-col>
+      </v-row>
+      <v-row class="pa-1">
+        <v-col cols="12" md="12">
+          <v-toolbar-title @click="$router.push(`/contest/${contest.uuid}/`)">{{contest.name_contest}}</v-toolbar-title>
+
+          <p class="white-text">Старт: {{dateView(contest.datetime_start)}}</p>
+          <p class="white-text">Конец: {{dateView(contest.datetime_end)}}</p>
+          <p class="white-text">Длительность: {{distante}}</p>
+        </v-col>
+      </v-row>
+    </template>
+    <v-divider></v-divider>
+    <v-list-item @click="$router.push(`/contest/${contest.uuid}/result`)" title="Таблица участнико"></v-list-item>
+    <v-list-item @click="$router.push(`/contest/${contest.uuid}/tasks`)" title="Задания"></v-list-item>
+    <v-divider></v-divider>
+    <v-list-item @click="$emit('timerClose')" title="Закончить"></v-list-item>
+    <v-list-item @click="$router.push(`/menu`)" title="Выйти"></v-list-item>
+    <v-divider></v-divider>
+    <v-list-item><MyTimer :data-json="contest.datetime_end" @close="closeContest"/></v-list-item>
+  </v-navigation-drawer>
 </template>
 
 <script>
 import MyTimer from "@/components/MyTimer";
 export default {
   components:{
-    //AgreeButton,
     MyTimer
   },
   data(){
@@ -77,29 +86,4 @@ export default {
 </script>
 
 <style scoped>
-.navbar__left h1{
-  font-size: 40px;
-  text-align: center;
-}
-.navbar__left img{
-  display: block;
-  margin: 20px auto;
-  width: 65%;
-}
-
-
-
-.sidenav {
-  transform: translateX(0%) !important;
-}
-.name__custom{
-  font-size: 30px;
-  margin-top: 16px;
-  font-weight: 500;
-  line-height: 70px;
-}
-.circle__custom{
-  height: 130px;
-  width: 130px;
-}
 </style>

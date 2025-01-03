@@ -1,7 +1,9 @@
 <template>
-  <button class="waves-effect waves-light btn red darken-4" style="margin-right: 5px">
-    <slot></slot>
-  </button>
+  <v-btn variant="outlined" color="indigo-darken-3">
+    <slot>
+
+    </slot>
+  </v-btn>
 </template>
 
 <script>

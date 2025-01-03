@@ -1,11 +1,5 @@
 <template>
-  <div class="row">
-    <div class="col s12">
-      <h3>
-        <slot></slot>
-      </h3>
-    </div>
-  </div>
+  <p class="text-left text-h3"><slot></slot></p>
 </template>
 
 <script>

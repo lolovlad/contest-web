@@ -1,22 +1,29 @@
 <template>
-  <div class="form">
-    <img src="../static/logo.png">
-    <FormLogin :error="error" @signin="login">
-
-    </FormLogin>
-    <h3></h3>
-  </div>
+  <v-container>
+    <v-row align="center">
+      <v-col cols="12" md="12">
+        <v-sheet>
+          <h1 class="text-center">АГУ им. Татищева</h1>
+        </v-sheet>
+      </v-col>
+    </v-row>
+    <v-row align="center">
+      <FormLogin :error="error" @signin="login"/>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import FormLogin from "@/components/FormLogin";
+import FormLogin from "@/components/Form/FormLogin.vue";
+import logo from '@/assets/logo.png'
 export default {
   components: {
     FormLogin
   },
   data(){
     return{
-      error: ""
+      error: null,
+      logo: logo
     }
   },
   methods: {
@@ -48,19 +55,4 @@ export default {
 </script>
 
 <style scoped>
-.form{
-  height: 100%;
-  max-width: 400px;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-}
-
-.form > img{
-  width: 200px;
-  height: 200px;
-  margin: 30px 0;
-}
 </style>

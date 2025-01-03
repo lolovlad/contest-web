@@ -1,7 +1,13 @@
 <template>
-  <div class="btn__fix">
-    <a class="btn-floating btn-large waves-effect waves-light red darken-4 "><i class="material-icons">add</i></a>
-  </div>
+  <v-fab
+      icon="$plus"
+      class="ms-4 mb-4"
+      location="bottom center"
+      size="64"
+      fixed
+      app
+      color="deep-orange-accent-4">
+  </v-fab>
 </template>
 
 <script>

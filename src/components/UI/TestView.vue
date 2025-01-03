@@ -1,16 +1,16 @@
 <template>
-  <div class="divider"></div>
-  <h4>Номер теста {{numberTest}}</h4>
-  <div class="test__body">
-    <div class="test__chunk">
-      <h5 class="text-bold">Ввод</h5>
-      <p>{{examplePrintVariable}}</p>
-    </div>
-    <div class="test__chunk">
-      <h5 class="text-bold">Ввод</h5>
-      <p>{{examplePrintAnswer}}</p>
-    </div>
-  </div>
+  <v-divider/>
+  <p class="text-left text-h4 pt-5">Номер теста {{numberTest}}</p>
+  <v-row>
+    <v-col cols="12" md="6">
+      <p class="text-left text-h5 pt-5">Ввод</p>
+      <p class="pt-3 pb-3">{{examplePrintVariable}}</p>
+    </v-col>
+    <v-col cols="12" md="6">
+      <p class="text-left text-h5 pt-5">Ввод</p>
+      <p class="pt-3 pb-3">{{examplePrintAnswer}}</p>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -42,34 +42,4 @@ export default {
 </script>
 
 <style scoped>
-
-.top__margin{
-  margin-top: 40px;
-}
-
-.test__main{
-  font-size: 20px;
-  margin-bottom: 30px;
-}
-.test__body{
-  display: flex;
-  padding: 5px;
-  min-width: 80%;
-}
-.test__chunk{
-  min-width: 25%;
-}
-.test__chunk h4{
-  margin-bottom: 15px;
-}
-.test__main h2{
-  margin-bottom: 30px;
-}
-.test__chunk > p{
-  white-space: pre;
-}
-
-.text-bold{
-  font-weight: 500;
-}
 </style>

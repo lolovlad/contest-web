@@ -8,7 +8,7 @@ import DescriptionTask from "@/components/UI/DescriptionTask";
 import FileInput from "@/components/UI/FileInput";
 import Loader from "@/components/UI/CastomLoader";
 import UserCard from "@/components/UI/UserCard";
-import CastomModelWindow from "@/components/UI/CastomModelWindow";
+import CastomModelWindow from "@/components/UI/CustomModelWindow.vue";
 import FixedButton from "@/components/UI/FixedButton";
 import TextEditor from "@/components/UI/TextEditor";
 import DateTimePicker from "@/components/UI/DateTimePicker";

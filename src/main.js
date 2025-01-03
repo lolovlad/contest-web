@@ -1,20 +1,32 @@
 import { createApp } from 'vue'
 import App from '@/App'
-import components from '@/components/UI'
 import router from '@/router/router'
 import store from "@/store";
 import './axios'
-import 'materialize-css/dist/css/materialize.css'
-import 'materialize-css/dist/js/materialize'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { VFileUpload, VFileUploadItem } from 'vuetify/labs/VFileUpload'
+
+
+const vuetify = createVuetify({
+    components: {
+        VFileUpload,
+        VFileUploadItem,
+        ...components
+    },
+    directives,
+    icons: {
+        defaultSet: 'mdi', // This is already the default value - only for display purposes
+    },
+
+})
 
 const app = createApp(App)
 
-components.forEach(component => {
-    app.component(component.name, component)
-})
 
-app
-    .use(router)
-    .use(store)
-    .mount("#app")
+app.use(router).use(store).use(vuetify).mount('#app')
+

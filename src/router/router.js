@@ -1,24 +1,26 @@
 import LoginPage from "@/pages/LoginPage";
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
 import {auth as $store} from "@/store/auth.model";
-import MenuPage from "@/pages/MenuPage";
+import MenuPage from "@/pages/UserPage/Menu/MenuPage.vue";
 import AdminPage from "@/pages/AdminPage";
-import ContestPage from "@/pages/ContestPage";
-import ContestHomePage from "@/pages/ContestHomePage";
-import ContestTaskPage from "@/pages/ContestTaskPage";
-import ContestResultPage from "@/pages/ContestResultPage";
-import ContestTaskReportPage from "@/pages/ContestTaskReportPage";
-import AdminUserPage from "@/pages/AdminUserPage";
-import AdminContestPage from "@/pages/AdminContestPages/AdminContestPage";
-import AdminTeamPage from "@/pages/AdminTeamPage";
-import AdminContestForm from "@/pages/AdminContestPages/AdminContestForm";
-import AdminContestListPage from "@/pages/AdminContestPages/AdminContestListPage";
-import AdminTaskPage from "@/pages/AdminContestPages/Task/AdminTaskPage";
-import AdminTaskViewPage from "@/pages/AdminContestPages/Task/AdminTaskViewPage";
-import AdminTaskForm from "@/pages/AdminContestPages/Task/AdminTaskForm";
-import AdminTaskSettingsForm from "@/pages/AdminContestPages/Task/AdminTaskSettingsForm";
-import AdminContestControllerPage from "@/pages/AdminContestPages/AdminContestControllerPage";
-import AdminAnswerFormEditPage from "@/pages/AdminContestPages/Answer/AdminAnswerFormEditPage";
+import ContestPage from "@/pages/UserPage/Contest/ContestPage.vue";
+import ContestHomePage from "@/pages/UserPage/Contest/ContestHomePage.vue";
+import ContestTaskPage from "@/pages/UserPage/Contest/ContestTaskPage.vue";
+import ContestResultPage from "@/pages/UserPage/Contest/ContestResultPage.vue";
+import ContestTaskReportPage from "@/pages/UserPage/Contest/ContestTaskReportPage.vue";
+import AdminUserPage from "@/pages/AdminPage/User/AdminUserPage.vue";
+import AdminContestPage from "@/pages/AdminPage/Contest/AdminContestPage.vue";
+import AdminTeamPage from "@/pages/UserPage/AdminTeamPage.vue";
+import AdminContestForm from "@/pages/AdminPage/Contest/AdminContestForm.vue";
+import AdminContestListPage from "@/pages/AdminPage/Contest/AdminContestListPage.vue";
+import AdminTaskPage from "@/pages/AdminPage/Contest/Task/AdminTaskPage";
+import AdminTaskViewPage from "@/pages/AdminPage/Contest/Task/AdminTaskViewPage";
+import AdminTaskForm from "@/pages/AdminPage/Contest/Task/AdminTaskForm";
+import AdminTaskSettingsForm from "@/pages/AdminPage/Contest/Task/AdminTaskSettingsForm";
+import AdminContestControllerPage from "@/pages/AdminPage/Contest/AdminContestControllerPage.vue";
+import AdminAnswerFormEditPage from "@/pages/AdminPage/Contest/Answer/AdminAnswerFormEditPage";
+import EditUserAdminPage from "@/pages/AdminPage/User/EditUserAdminPage.vue";
+import ViewUserAdminPAge from "@/pages/AdminPage/User/ViewUserAdminPAge.vue";
 
 const routes = [
     {
@@ -66,7 +68,21 @@ const routes = [
             },
             {
                 path: "user",
-                component: AdminUserPage
+                component: AdminUserPage,
+                children: [
+                    {
+                        path: "",
+                        component: ViewUserAdminPAge
+                    },
+                    {
+                        path: "edit/:id_user",
+                        component: EditUserAdminPage,
+                    },
+                    {
+                        path: "add",
+                        component: EditUserAdminPage,
+                    },
+                ]
             },
             {
                 path: "contest",

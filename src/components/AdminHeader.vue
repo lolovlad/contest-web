@@ -1,70 +1,108 @@
 <template>
-  <nav>
-    <div class="nav-wrapper red darken-4">
-      <a href="#" class="brand-logo">Админ панель</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a @click="$router.push(`/admin/user/`)">Пользователи</a></li>
-        <li><a @click="$router.push(`/admin/contest/`)">Контесты</a></li>
-        <li><a @click="$router.push(`/admin/task/`)">Банк заданий</a></li>
-        <li><a class="dropdown-trigger" data-target="dropdownProfile" ref="dropdownProfile">Профиль</a></li>
-      </ul>
-    </div>
-    <ul class="dropdown-content" id='dropdownProfile'>
-      <li><a href="">Профиль</a></li>
-      <li class="divider"></li>
-      <li><a @click="logout">Выход</a></li>
-    </ul>
-  </nav>
+  <v-app-bar color="red-darken-4"
+             prominent>
+    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar-title @click="$route.push('/')">Админ панель</v-app-bar-title>
+    <template v-slot:append>
+      <v-menu
+          v-model="menu"
+          :close-on-content-click="false"
+          location="end"
+      >
+        <template v-slot:activator="{ props }">
+          <v-btn
+              color="white"
+              v-bind="props"
+          >
+            Аккаунт
+          </v-btn>
+        </template>
+
+        <v-card min-width="300">
+          <v-list>
+            <v-list-item
+                prepend-avatar="/account-icon-33.png"
+                :subtitle="prof"
+                :title="fullName"
+            >
+            </v-list-item>
+          </v-list>
+
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn
+                variant="text"
+                @click="menu = false"
+            >
+              Закрыть
+            </v-btn>
+            <v-btn
+                color="primary"
+                variant="text"
+                @click="logout"
+            >
+              Выйти из аккаунта
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
+    </template>
+  </v-app-bar>
+  <v-navigation-drawer
+      v-model="drawer"
+      temporary
+  >
+    <v-list density="compact" nav>
+      <v-list-item prepend-icon="mdi-account" title="Пользователи" @click="$router.push(`/admin/user/`)"/>
+      <v-list-item prepend-icon="mdi-file-outline" title="Контесты" @click="$router.push(`/admin/contest/`)"/>
+      <v-list-item prepend-icon="mdi-bank-outline" title="Банк заданий" @click="$router.push(`/admin/task/`)"/>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
-import M from "materialize-css";
+import router from "@/router/router";
 export default {
   name: "AdminHeader",
-  mounted() {
-    const elem = this.$refs.dropdownProfile;
-    this.modelInstance = M.Dropdown.init(elem, {
-      alignment: "right",
-      coverTrigger: false
-    });
+  data(){
+    return{
+      drawer: false,
+      fav: true,
+      menu: false,
+      message: false,
+      hints: true,
+    }
   },
   methods:{
     logout(){
       this.$store.dispatch('auth/logout')
-      this.$router.push('/')
+      router.push('/')
+    }
+  },
+  computed: {
+    fullName(){
+      const user = this.$store.state.auth.user
+      if(user === null)
+        return `Неизветно`
+      if(user.name !== undefined){
+        return `${user.surname} ${user.name[0]}. ${user.patronymic[0]}.`
+      }
+      return `Неизветно`
+    },
+    prof(){
+      const user = this.$store.state.auth.user
+      if(user === null)
+        return `Неизветно`
+      if(user.profession !== null){
+        return `${user.profession.description}`
+      }
+      return "Неизветно"
     }
   }
 }
 </script>
 
 <style scoped>
-.header__main{
-  width: 100%;
-  height: 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #b50034;
-}
-.menu{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 20px;
-}
-.menu > li{
-  padding: 10px 20px;
-  font-size: 25px;
-  font-weight: bold;
-  color: white;
-  list-style-type: none;
-  cursor: pointer;
-}
-.menu > li:hover{
-  background: white;
-  color: black;
-}
-.btn__menu{
-  margin: 0 20px;
-}
 </style>

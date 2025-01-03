@@ -1,13 +1,13 @@
 <template>
-  <div class="row">
-    <div class="col s12">
-      <h5>Итог тестирования {{reportChunk.state_test}}</h5>
-      <h5>Количество баллов {{reportChunk.point_sum}}</h5>
-      <h5>Последний номер теста {{reportChunk.number_test}}</h5>
-      <h5>Количетсов тестов {{countTests}}</h5>
+  <v-row class="mb-10">
+    <v-col cols="12" md="12">
+      <p class="text-h6">Итог тестирования {{reportChunk.state_test}}</p>
+      <p class="text-h6">Количество баллов {{reportChunk.point_sum}}</p>
+      <p class="text-h6">Последний номер теста {{reportChunk.number_test}}</p>
+      <p class="text-h6">Количетсов тестов {{countTests}}</p>
       <CastomTable class="block__table" v-if="countTests > 0" :headers="headerReportTable" :contents="contentReportTable"/>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

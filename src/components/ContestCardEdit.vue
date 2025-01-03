@@ -2,7 +2,7 @@
   <div class="col s4">
     <div class="card">
       <div class="card-image">
-        <img src="../static/solo_olimp.jpg">
+        <img src="../assets/solo_olimp.jpg">
         <a class="btn-floating halfway-fab waves-effect waves-light red darken-4" @click="$emit('edit', contest)"><i class="material-icons">edit</i></a>
       </div>
       <div class="card-content">
